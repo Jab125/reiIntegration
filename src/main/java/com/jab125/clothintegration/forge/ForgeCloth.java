@@ -14,6 +14,7 @@ import me.shedaniel.clothconfig2.gui.AbstractConfigScreen;
 import me.shedaniel.clothconfig2.impl.builders.AbstractFieldBuilder;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraftforge.common.ForgeConfigSpec;
@@ -119,6 +120,8 @@ public class ForgeCloth {
                         return Optional.empty();
                     });
                     main.addEntry(entry.setTooltip(Text.of(right.getComment())).build());
+                } else {
+                    main.addEntry(entryBuilder.startTextDescription(Text.empty().formatted(Formatting.RED).append(title.copy().formatted(Formatting.BOLD)).append(" can't be modified in config yet!")).setTooltip(Text.of(right.getComment()), Text.literal("Report to @jab125 on Discord!").formatted(Formatting.RED)).build());
                 }
                 //main.addEntry(entryBuilder.startTextField(Text.translatable(right.getTranslationKey()), left.get().toString()).build());
             }catch (Exception e){e.printStackTrace();}
