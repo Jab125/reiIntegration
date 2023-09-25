@@ -1,0 +1,427 @@
+import com.replaymod.gradle.preprocess.PreprocessTask
+
+buildscript {
+    def mcVersion
+    // 0 for forge, 1 for fabric, 2 for quilt
+    def loader = project.name.endsWith("-neo") ? -1 : project.name.endsWith("-fabric") ? 1 : project.name.endsWith("-forge") ? 0 : project.name.endsWith("-quilt") ? 2 : -1;
+    def (major, minor, patch) = project.name.tokenize('-')[0].tokenize('.')
+    mcVersion = "${major}${minor.padLeft(2, '0')}${(patch ?: '').padLeft(2, '0')}" as int
+    project.ext.mcVersion = mcVersion
+    project.ext.loader = loader
+
+    repositories {
+        mavenLocal()
+        maven {
+            url = "https://plugins.gradle.org/m2/"
+        }
+        mavenCentral()
+        gradlePluginPortal()
+        maven {
+            name = "fabric"
+            url = "https://maven.fabricmc.net/"
+        }
+        maven {
+            name = "quilt"
+            url = "https://maven.quiltmc.org/repository/release/"
+        }
+        maven {
+            url = "https://maven.neoforged.net/releases"
+        }
+        maven {
+            name = "forge"
+            url = "https://maven.minecraftforge.net"
+        }
+        maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
+        maven { url 'https://jitpack.io' }
+        maven { url "https://maven.architectury.dev" }
+        maven { url "https://repo.essential.gg/repository/maven-public" }
+        maven { url = 'https://repo.spongepowered.org/maven' }
+    }
+    dependencies {
+        classpath 'gradle.plugin.com.github.jengelman.gradle.plugins:shadow:7.0.0'
+        classpath 'dev.architectury.loom:dev.architectury.loom.gradle.plugin:1.1-SNAPSHOT'
+        classpath "me.modmuss50:remotesign:0.4.0"
+    }
+}
+
+
+plugins {
+    id 'java'
+}
+
+@SuppressWarnings("all")
+String nodontdothat() {
+    throw new IllegalStateException("how the")
+}
+
+if (loader != 1) {
+    project.ext["loom.platform"] = (loader == 0 || loader == -1) ? "forge" : loader == 2 ? "quilt" : nodontdothat()
+}
+
+group 'com.jab125.jeicloth'
+def computeVersion() {
+    return "${rootProject.properties.version}"
+}
+version = computeVersion()
+
+apply plugin: 'dev.architectury.loom'
+apply plugin: 'loom-obfuscator'
+apply plugin: 'architectury-plugin'
+
+apply plugin: "com.matthewprenger.cursegradle"
+apply plugin: "com.modrinth.minotaur"
+
+architectury {
+    platformSetupLoomIde()
+    if (loader == 0 || loader == -1) {
+        forge()
+    } else if (loader == 1) {
+        fabric()
+    } else if (loader == 2) {
+        loader("quilt")
+    } else {
+        nodontdothat()
+    }
+}
+
+apply from: rootProject.projectDir.toPath().resolve("secrets.gradle")
+
+repositories {
+    mavenLocal()
+    maven {
+        name = "SpongePowered Repo"
+        url = "https://repo.spongepowered.org/maven/"
+    }
+    maven {
+        name = "fabric"
+        url = "https://maven.fabricmc.net/"
+    }
+    maven {
+        url = "https://maven.neoforged.net/releases"
+    }
+    maven {
+        name = "quilt"
+        url = "https://maven.quiltmc.org/repository/release/"
+    }
+    maven {
+        url 'https://maven.terraformersmc.com/releases/'
+        content {
+            includeGroup 'com.terraformersmc'
+        }
+    }
+    maven {
+        url 'https://jitpack.io'
+        content {
+            includeGroupByRegex 'com\\.github\\..*'
+        }
+    }
+    maven {
+        // location of the maven that hosts JEI files before January 2023
+        name = "Progwml6's maven"
+        url = "https://dvs1.progwml6.com/files/maven/"
+    }
+    maven {
+        // location of the maven that hosts JEI files since January 2023
+        name = "Jared's maven"
+        url = "https://maven.blamejared.com/"
+    }
+    maven {
+        // location of a maven mirror for JEI files, as a fallback
+        name = "ModMaven"
+        url = "https://modmaven.dev"
+    }
+    maven {
+        url = "https://maven.ryanliptak.com/"
+    }
+    maven {
+        url "https://cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
+}
+
+apply plugin: "me.modmuss50.remotesign"
+remoteSign {
+    requestUrl = remoteSignUrl
+    jarAuthKey = remoteSignJarAuthKey
+    pgpAuthKey = remoteSignPgpAuthKey
+}
+
+System.out.println(project.name)
+apply plugin: 'com.jab125.preprocessor.preprocess'
+
+preprocess {
+    vars.put("MC", project.mcVersion)
+    vars.put("LOADER", loader) // 0 forge, 1 fabric, 2 quilt
+    // functionality defined in kotlin
+    parsers.put("LOADER", mlp)
+    parsers.put("MC", mcp)
+    keywords.set([
+            ".java": PreprocessTask.DEFAULT_KEYWORDS,
+            ".kt": PreprocessTask.DEFAULT_KEYWORDS,
+            ".json": PreprocessTask.DEFAULT_KEYWORDS,
+            ".mcmeta": PreprocessTask.DEFAULT_KEYWORDS,
+            ".cfg": PreprocessTask.CFG_KEYWORDS,
+            ".properties": PreprocessTask.CFG_KEYWORDS,
+            ".vert": PreprocessTask.DEFAULT_KEYWORDS,
+            ".frag": PreprocessTask.DEFAULT_KEYWORDS,
+    ])
+
+    patternAnnotation.set("com.jab125.clothintegration.Pattern")
+}
+
+def mcVersionStr = "${(int)(mcVersion/10000)}.${(int)(mcVersion/100)%100}" + (mcVersion%100==0 ? '' : ".${mcVersion%100}")
+sourceCompatibility = targetCompatibility = mcVersion >= 11800 ? 17 : mcVersion >= 11700 ? 16 : 1.8
+tasks.withType(JavaCompile).configureEach {
+    if (mcVersion >= 11700)
+        options.release = mcVersion >= 11800 ? 17 : mcVersion >= 11700 ? 16 : 8
+}
+archivesBaseName = "clothintegration-" + mcVersionStr + "-" + (loader == -1 ? "neo" : loader == 0 ? "forge" : loader == 1 ? "fabric" : loader == 2 ? "quilt" : nodontdothat())
+
+loom {
+    //accessWidenerPath = getRootProject().projectDir.toPath().resolve("src/main/resources/modpack-update-checker.accesswidener").toFile()
+    mixin.defaultRefmapName.set('clothintegration.refmap.json')
+    runConfigs.all {
+        ideConfigGenerated = true
+    }
+    accessWidenerPath = getRootProject().projectDir.toPath().resolve("src/main/resources/clothintegration.accesswidener").toFile()
+    if (loader == 0 || loader == -1) {
+        forge {
+            mixinConfig "clothintegration.mixins.json"
+        }
+    }
+}
+
+dependencies {
+
+    minecraft 'com.mojang:minecraft:' + project.properties.minecraft
+    mappings 'net.fabricmc:yarn:' + project.properties.yarn
+    if (loader == 1) {
+        modImplementation 'net.fabricmc:fabric-loader:0.14.21'
+        def fabricApiVersion = project.properties.fabricApi
+        modImplementation "net.fabricmc.fabric-api:fabric-api:$fabricApiVersion"
+    } else if (loader == 2) {
+//        modImplementation 'org.quiltmc:quilt-loader:0.19.0-beta.11'
+//        def quiltedFabricApiVersion = [
+//                11904: '6.0.0-beta.6+0.79.0-1.19.4'
+//        ][mcVersion]
+//        modImplementation "org.quiltmc.quilted-fabric-api:quilted-fabric-api:$quiltedFabricApiVersion"
+    }
+
+    if (loader >= 1) { // fabric or quilt
+        modImplementation "com.terraformersmc:modmenu:${project.properties.modMenu}", {
+            exclude(group: "net.fabricmc.fabric-api")
+            exclude(group: "net.fabricmc")
+        }
+    } else {
+        if (loader == 0) {
+            forge "net.minecraftforge:forge:$forge"
+        } else if (loader == -1) {
+            forge "net.neoforged:forge:$forge"
+        } else {
+            nodontdothat()
+        }
+    }
+    {
+        def loaderName = loader <= 0 ? "forge" : "fabric"
+        System.out.println("applying " + loader + " " + loaderName)
+        modImplementation "mezz.jei:jei-${project.name.split('-')[0]}-$loaderName:${project.properties.jeiVersion}", {
+            transitive = false
+        };
+
+//        modRuntimeOnly "mezz.jei:jei-${project.name.split('-')[0]}-$loaderName:$project.properties.jeiVersion", {
+//            transitive = false
+//        }
+//        if (loader <= 0) {
+//            forgeRuntimeLibrary "mezz.jei:jei-${project.name.split('-')[0]}-common:$project.properties.jeiVersion", {
+//                exclude(group: "net.fabricmc.fabric-api")
+//                exclude(group: "net.fabricmc")
+//            }
+//        }
+        modApi "me.shedaniel.cloth:cloth-config-$loaderName:$project.properties.clothConfig", {
+            exclude(group: "net.fabricmc.fabric-api")
+            exclude(group: "net.fabricmc")
+        }
+
+        if (loader == -1 && mcVersion == 1_20_01) {
+            modLocalRuntime "squeek.appleskin:appleskin-forge:mc1.20.1-2.5.0"
+        }
+    }
+}
+
+processResources {
+    def minecraftVersion = project.properties.mcDep
+
+    inputs.property "version", project.version
+    inputs.property "mcVersion", project.mcVersion
+    inputs.property "minecraftVersion", minecraftVersion
+    inputs.property "jeiDep", project.properties.jeiDep
+    if (loader <= 0) {
+        inputs.property "forge", project.properties.forgeDep
+    }
+    if (loader == 2) {
+        inputs.property "group", project.group.toString()
+    }
+
+    filesMatching(["fabric.mod.json", "META-INF/mods.toml", "quilt.mod.json"]) {
+        def map = loader == 2 ? ["version": project.version, "minecraftVersion": minecraftVersion, group: project.group.toString()] : ["version": project.version, "minecraftVersion": minecraftVersion]
+        if (loader <= 0) map.put("forge", project.properties.forgeDep)
+        map.put("jeiDep", project.properties.jeiDep)
+        map.put("clothConfigDep", project.properties.clothConfigDep)
+        System.out.println(map)
+        expand map
+    }
+    //${resourcePackFormat}
+
+    if (loader <= 0) {
+        filesMatching(["pack.mcmeta"]) {
+            expand resourcePackFormat: project.properties.resourcePackFormat, dataPackFormat: project.properties.dataPackFormat
+        }
+    }
+
+    // exclude mod meta for non-applicable loader
+    if (loader <= 0) {
+        exclude 'quilt.mod.json', 'fabric.mod.json', 'clothintegration.accesswidener'
+    } else if (loader == 1) {
+        exclude 'quilt.mod.json', 'META-INF/mods.toml', 'META-INF/accesstransformer.cfg', 'pack.mcmeta'
+    } else if (loader == 2) {
+        exclude 'fabric.mod.json', 'META-INF/mods.toml', 'META-INF/accesstransformer.cfg', 'pack.mcmeta'
+    }
+}
+
+
+def proguardJarOut = file(jar.archiveFile.get().getAsFile().absolutePath.replace(".jar", "-min.jar"))
+
+
+tasks.register('bundleJar', com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar).configure {
+    from { tasks.jar.archiveFile.get() }
+    dependsOn { tasks.jar }
+    manifest.inheritFrom tasks.jar.manifest
+}
+
+task obfuscateJar(type: ProGuardTask, dependsOn: jar) {
+    configuration rootProject.file('proguard-rules.pro')
+    libraryjars "<java.home>/jmods/java.base.jmod(!**.jar;!module-info.class)"
+    injars bundleJar.archiveFile.get().getAsFile()
+    outjars proguardJarOut
+    obfuscationdictionary project.file(".gradle/proguard-dictionary.txt")
+    classobfuscationdictionary project.file(".gradle/proguard-dictionary.txt")
+    libraryjars files(configurations.compileClasspath)
+    printmapping 'out.map'
+}
+
+tasks.remapJar {
+    dependsOn(obfuscateJar)
+    mustRunAfter(obfuscateJar)
+    inputFile = file(proguardJarOut)
+    addNestedDependencies.set(true)
+    afterEvaluate { // FIXME why does loom overwrite this if we set it immediately?
+        archiveClassifier.set('release')
+    }
+}
+import proguard.gradle.ProGuardTask
+import com.jab125.lobf.task.ObfuscateJarTask
+//tasks.register("obfuscateJar", ObfuscateJarTask).configure {
+//    //libraryjars("<java.home>/jmods/java.base.jmod(!**.jar;!module-info.class)")
+//    inputFile.set(tasks.jar.getArchiveFile().get().getAsFile())
+//    System.out.println(getLibraryJarFiles())
+//    libraryjars("<java.home>/jmods/java.base.jmod(!**.jar;!module-info.class)")
+//   // outputFile.set(tasks.jar.getArchiveFile().get().getAsFile().toPath().resolveSibling("obfed.jar").toFile())
+//}
+//jar.finalizedBy("obfuscateJar")
+
+def randomString(min, max) {
+    //def AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+    def AB = "0OolIiL"
+    def rnd = new java.security.SecureRandom()
+    return (0..rnd.nextInt(min, max)).toList().collect { AB.charAt(rnd.nextInt(AB.length())) }.join("")
+}
+
+project.file(".gradle/proguard-dictionary.txt").delete()
+project.file(".gradle/proguard-dictionary.txt").write((0..1000).toList().collect { randomString(5, 60) }.join("\n"))
+
+bundleJar.finalizedBy(obfuscateJar)
+remapJar {
+   // inputFile.set(proguardJarOut)
+    //inputFile = proguardJarOut
+}
+
+//remapJar.dependsOn(obfuscateJar)
+
+
+remoteSign {
+    sign remapJar
+}
+//build.finalizedBy(tasks.bundleJar)
+tasks.remapJar.finalizedBy(signRemapJar)
+//jar {
+//    exclude('com/jab125/mpuc/Pattern.class', 'com/jab125/mpuc/Patterns.class', 'com/jab125/mpuc/Hooks.class') //exclude files from the built jar that are only used to generate the assets & data
+//}
+
+loom {
+    mods {
+        jeiCloth {
+            sourceSet sourceSets.main
+        }
+    }
+}
+
+
+curseforge {
+    apiKey = CF_KEY
+    project {
+        id = "0"
+        changelog = CHANGELOG
+        releaseType = "beta"
+        //addGameVersion "Forge", "Fabric", "Client", "Java 17"
+        //  addGameVersion "Client"
+        addGameVersion loader == 0 ? "Forge" : loader == 1 ? "Fabric" : loader == 2 ? "Quilt" : loader == -1 ? "NeoForge" : nodontdothat()
+        addGameVersion project.name.split("-")[0]
+        addGameVersion "Java " + (mcVersion >= 11800 ? 17 : mcVersion >= 11700 ? 16 : 8)
+        mainArtifact(signRemapJar.output) {
+            displayName = "[${project.name.split('-')[0]}] Cloth Integration ${version} for ${loader == 0 ? "Forge" : loader == 1 ? "Fabric" : loader == 2 ? "Quilt" : loader == -1 ? "NeoForge" : nodontdothat()}"
+            if (loader >= 1) {
+                relations {
+                    if (loader == 1) {
+                        requiredDependency 'fabric-api'
+                    } else if (loader == 2) {
+                        requiredDependency 'qsl'
+                    }
+                }
+            }
+        }
+    }
+
+    options {
+        debug = false
+        forgeGradleIntegration = false
+    }
+}
+
+modrinth {
+    token = MR_KEY // This is the default. Remember to have the MODRINTH_TOKEN environment variable set or else this will fail, or set it to whatever you want - just make sure it stays private!
+    projectId = "0" // This can be the project ID or the slug. Either will work!
+    versionNumber = version // You don't need to set this manually. Will fail if Modrinth has this version already
+    versionName = "[${project.name.split('-')[0]}] Cloth Integration ${version} for ${loader == 0 ? "Forge" : loader == 1 ? "Fabric" : loader == 2 ? "Quilt" : loader == -1 ? "NeoForge" : nodontdothat()}"
+    versionType = "beta" // This is the default -- can also be `beta` or `alpha`
+    uploadFile = signRemapJar.output // With Loom, this MUST be set to `remapJar` instead of `jar`!
+    gameVersions = [project.name.split("-")[0]] // Must be an array, even with only one version
+    loaders = [loader == -1 ? "neoforge" : loader == 0 ? "forge" : loader == 1 ? "fabric" : loader == 2 ? "quilt" : nodontdothat()] // Must also be an array - no need to specify this if you're using Loom or ForgeGradle
+    changelog = CHANGELOG
+    dependencies { // A special DSL for creating dependencies
+        // scope.type
+        // The scope can be `required`, `optional`, `incompatible`, or `embedded`
+        // The type can either be `project` or `version`
+        //required.project "fabric-api" // Creates a new required dependency on Fabric API
+        if (loader == 1) {
+            required.project 'fabric-api'
+        } else if (loader == 2) {
+            required.project 'qsl'
+        }
+    }
+    debugMode = false
+}

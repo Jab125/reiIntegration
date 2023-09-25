@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "id": "clothintegration",
+  "version": "${version}",
+  "name": "Cloth Integration",
+  "description": "Adds a configuration screen for JEI using Cloth Config.",
+  "accessWidener": "clothintegration.accesswidener",
+  "authors": [
+    "Jab125"
+  ],
+  "contact": {
+  },
+  "license": "All Rights Reserved",
+  "icon": "assets/clothintegration/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "com.jab125.clothintegration.FabricMain"
+    ],
+    "jei_mod_plugin": [
+      "com.jab125.clothintegration.jei.JeiPlugin"
+    ],
+    "modmenu": [
+      "com.jab125.clothintegration.platform.ModMenuCompat"
+    ]
+  },
+  "mixins": [
+    "clothintegration.mixins.json"
+  ],
+  "depends": {
+    "fabric": "*",
+    "minecraft": "${minecraftVersion}",
+    "cloth-config": "${clothConfigDep}"
+  },
+  "recommends": {
+    "jei": "${jeiDep}"
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.kofi": "https://ko-fi.com/Jab125/"
+      }
+    }
+  }
+}

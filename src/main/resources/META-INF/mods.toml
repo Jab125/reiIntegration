@@ -1,0 +1,43 @@
+modLoader = "javafml"
+loaderVersion = "*"
+#issueTrackerURL = ""
+license = "All Rights Reserved"
+
+[[mods]]
+modId = "clothintegration"
+version = "${version}"
+displayName = "Cloth Integration"
+authors = "Jab125"
+description = '''
+Automatically creates config screens for mods that use the forge config system.
+Also supports JEI.
+'''
+#logoFile = ""
+
+[[dependencies.clothintegration]]
+modId = "forge"
+mandatory = true
+versionRange = "$forge"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.clothintegration]]
+modId = "minecraft"
+mandatory = true
+versionRange = "$minecraftVersion"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.clothintegration]]
+modId="jei"
+mandatory=true
+versionRange="$jeiDep"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.clothintegration]]
+modId="cloth_config"
+mandatory=true
+versionRange="$clothConfigDep"
+ordering="NONE"
+side="BOTH"

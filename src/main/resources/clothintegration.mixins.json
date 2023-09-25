@@ -1,0 +1,17 @@
+{
+  "required": true,
+  "package": "com.jab125.clothintegration.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "minVersion": "0.7.11",
+  "client": [
+  ],
+  "mixins": [
+    "EnumSerializerAccessor",
+    "IntegerSerializerAccessor",
+    "AbstractConfigScreenAccessor"
+  ],
+  "injectors": {
+    "maxShiftBy": 5,
+    "defaultRequire": 1
+  }
+}
