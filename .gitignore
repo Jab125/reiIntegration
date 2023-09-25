@@ -48,3 +48,4 @@ secrets.gradle
 
 versions/*/run
 versions/*/out.map
+versions/*/obfuscation-mappings.tiny

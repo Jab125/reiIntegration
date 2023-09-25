@@ -1,4 +1,8 @@
 import com.replaymod.gradle.preprocess.PreprocessTask
+import net.fabricmc.loom.configuration.providers.mappings.utils.DstNameFilterMappingVisitor
+import net.fabricmc.mappingio.adapter.MappingSourceNsSwitch
+import net.fabricmc.mappingio.format.ProGuardReader
+import net.fabricmc.mappingio.format.Tiny2Writer
 
 buildscript {
     def mcVersion
@@ -315,6 +319,7 @@ task obfuscateJar(type: ProGuardTask, dependsOn: jar) {
 }
 
 tasks.remapJar {
+    from "obfuscation-mappings.tiny"
     dependsOn(obfuscateJar)
     mustRunAfter(obfuscateJar)
     inputFile = file(proguardJarOut)
@@ -325,6 +330,10 @@ tasks.remapJar {
 }
 import proguard.gradle.ProGuardTask
 import com.jab125.lobf.task.ObfuscateJarTask
+
+import java.nio.charset.StandardCharsets
+import java.nio.file.Files
+
 //tasks.register("obfuscateJar", ObfuscateJarTask).configure {
 //    //libraryjars("<java.home>/jmods/java.base.jmod(!**.jar;!module-info.class)")
 //    inputFile.set(tasks.jar.getArchiveFile().get().getAsFile())
@@ -340,11 +349,25 @@ def randomString(min, max) {
     def rnd = new java.security.SecureRandom()
     return (0..rnd.nextInt(min, max)).toList().collect { AB.charAt(rnd.nextInt(AB.length())) }.join("")
 }
+def gg = task("tothejaljkljlkjl", {
+    BufferedWriter writer = Files.newBufferedWriter(project.file("obfuscation-mappings.tiny").toPath(), StandardCharsets.UTF_8);
+    Tiny2Writer mappingVisitor = new Tiny2Writer(writer, false);
+    // Filter out field names matching the pattern
+    DstNameFilterMappingVisitor nameFilter = null;//new DstNameFilterMappingVisitor(mappingVisitor, SYNTHETIC_NAME_PATTERN);
 
+    // Make official the source namespace
+    MappingSourceNsSwitch nsSwitch = new MappingSourceNsSwitch(/*nameSyntheticMembers()*/true ? mappingVisitor : nameFilter, "obfuscated");
+    try (BufferedReader a = Files.newBufferedReader(project.file("out.map").toPath(), StandardCharsets.UTF_8)) {
+        ProGuardReader.read(a, "yarn", "obfuscated", nsSwitch);
+    }
+})
 project.file(".gradle/proguard-dictionary.txt").delete()
 project.file(".gradle/proguard-dictionary.txt").write((0..1000).toList().collect { randomString(5, 60) }.join("\n"))
 
 bundleJar.finalizedBy(obfuscateJar)
+obfuscateJar.finalizedBy(gg)
+
+
 remapJar {
    // inputFile.set(proguardJarOut)
     //inputFile = proguardJarOut
