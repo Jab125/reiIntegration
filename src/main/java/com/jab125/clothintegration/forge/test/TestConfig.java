@@ -1,3 +1,4 @@
+//#if LOADER<=FORGE
 package com.jab125.clothintegration.forge.test;
 
 import net.minecraft.util.Formatting;
@@ -33,3 +34,4 @@ public class TestConfig {
         CLIENT_SPEC = configure.getRight();
     }
 }
+//#endif
