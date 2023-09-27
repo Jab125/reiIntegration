@@ -18,6 +18,9 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 public class ForgeMain {
 
     public ForgeMain() {
+        //#if LOADER==NEO
+        PlatformUtil.assertNeoForge();
+        //#endif
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, TestConfig.CLIENT_SPEC);
         bus.addListener(this::loaded);
