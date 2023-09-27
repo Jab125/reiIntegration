@@ -364,7 +364,7 @@ def gg = task("tothejaljkljlkjl", {
 project.file(".gradle/proguard-dictionary.txt").delete()
 project.file(".gradle/proguard-dictionary.txt").write((0..1000).toList().collect { randomString(5, 60) }.join("\n"))
 
-bundleJar.finalizedBy(obfuscateJar)
+obfuscateJar.dependsOn(bundleJar)
 obfuscateJar.finalizedBy(gg)
 
 
