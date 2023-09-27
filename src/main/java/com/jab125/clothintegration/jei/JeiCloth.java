@@ -40,9 +40,9 @@ public class JeiCloth {
         ConfigEntryBuilder entryBuilder = configBuilder.entryBuilder();
         configBuilder.setParentScreen(prev);
         configBuilder.setTitle(Text.literal("Just Enough Items"));
-        for (IJeiConfigFile configFile : JeiPlugin.manager.getConfigFiles().stream().sorted(Comparator.comparingInt(value -> Character.toLowerCase(value.getPath().getFileName().toString().charAt(0)))).toList()) {
+        for (IJeiConfigFile configFile : JeiPlugin.manager.getConfigFiles().stream().sorted(Comparator.comparing(a -> a.getPath().getFileName().toString())).toList()) {
             ConfigCategory clothCategory2 = configBuilder.getOrCreateCategory(Text.literal(StringUtils.convertToSentence(configFile.getPath().getFileName().toString())));
-            for (IJeiConfigCategory category : configFile.getCategories().stream().sorted(Comparator.comparingInt(value -> Character.toLowerCase(value.getName().charAt(0)))).toList()) {
+            for (IJeiConfigCategory category : configFile.getCategories().stream().sorted(Comparator.comparing(IJeiConfigCategory::getName)).toList()) {
                 var clothCategory = entryBuilder.startSubCategory(Text.of(category.getName()));
                 for (IJeiConfigValue<?> configValue : category.getConfigValues()) {
                     IJeiConfigValueSerializer<?> serializer = configValue.getSerializer(); //config.jei.advanced.colorSearchEnabled
