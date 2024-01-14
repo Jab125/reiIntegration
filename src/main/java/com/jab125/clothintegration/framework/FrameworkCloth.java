@@ -28,8 +28,8 @@ public class FrameworkCloth {
 		configBuilder1.setEditable(false);
 		for (FrameworkConfigManager.FrameworkConfigImpl impl : impls) {
 			ConfigBuilder configBuilder = ConfigBuilder.create();
-			configBuilder1.setTitle(Text.of(impl.getFileName()));
-			configBuilder1.setEditable(!impl.isReadOnly());
+			configBuilder.setTitle(Text.of(impl.getFileName()));
+			configBuilder.setEditable(!impl.isReadOnly());
 			future.setIfPresent(configBuilder);
 			ConfigCategory category = configBuilder.getOrCreateCategory(Text.of(impl.getName().getPath()));
 			if (impl.isLoaded()) {
@@ -37,34 +37,33 @@ public class FrameworkCloth {
 				AbstractFieldBuilder<?, ?, ?> entry = null;
 				for (AbstractProperty<?> property : allProperties) {
 					if (property instanceof BoolProperty p) {
-						entry = configBuilder.entryBuilder().startBooleanToggle(Text.of(p.getName()), p.get()).setDefaultValue(p.getDefaultValue()).setSaveConsumer(p::set).setErrorSupplier(a -> Optional.ofNullable(!p.isValid(a) ? Text.literal("ERROR") : null));
-					}
-					if (property instanceof DoubleProperty p) {
-						entry = configBuilder.entryBuilder().startDoubleField(Text.of(p.getName()), p.get()).setDefaultValue(p.getDefaultValue()).setSaveConsumer(p::set).setErrorSupplier(a -> Optional.ofNullable(!p.isValid(a) ? Text.literal("ERROR") : null));
+						entry = configBuilder.entryBuilder().startBooleanToggle(translate(p), p.get()).setDefaultValue(p.getDefaultValue()).setSaveConsumer(p::set).setErrorSupplier(a -> Optional.ofNullable(!p.isValid(a) ? Text.literal("ERROR") : null));
+					} else if (property instanceof DoubleProperty p) {
+						entry = configBuilder.entryBuilder().startDoubleField(translate(p), p.get()).setDefaultValue(p.getDefaultValue()).setSaveConsumer(p::set).setErrorSupplier(a -> Optional.ofNullable(!p.isValid(a) ? Text.literal("ERROR") : null));
 					} else if (property instanceof EnumProperty r) {
 						EnumProperty<T> p = r;
 						Class<T> clazz = p.getDefaultValue().getDeclaringClass();
-						entry = configBuilder.entryBuilder().startEnumSelector(Text.of(p.getName()), clazz, p.getDefaultValue()).setDefaultValue(p.getDefaultValue()).setSaveConsumer(p::set).setErrorSupplier(a -> Optional.ofNullable(!p.isValid(a) ? Text.literal("ERROR") : null));
+						entry = configBuilder.entryBuilder().startEnumSelector(translate(p), clazz, p.getDefaultValue()).setDefaultValue(p.getDefaultValue()).setSaveConsumer(p::set).setErrorSupplier(a -> Optional.ofNullable(!p.isValid(a) ? Text.literal("ERROR") : null));
 					} else if (property instanceof IntProperty p) {
-						entry = configBuilder.entryBuilder().startIntField(Text.of(p.getName()), p.get()).setDefaultValue(p.getDefaultValue()).setSaveConsumer(p::set).setErrorSupplier(a -> Optional.ofNullable(!p.isValid(a) ? Text.literal("ERROR") : null));
+						entry = configBuilder.entryBuilder().startIntField(translate(p), p.get()).setDefaultValue(p.getDefaultValue()).setSaveConsumer(p::set).setErrorSupplier(a -> Optional.ofNullable(!p.isValid(a) ? Text.literal("ERROR") : null));
 					} else if (property instanceof LongProperty p) {
-						entry = configBuilder.entryBuilder().startLongField(Text.of(p.getName()), p.get()).setDefaultValue(p.getDefaultValue()).setSaveConsumer(p::set).setErrorSupplier(a -> Optional.ofNullable(!p.isValid(a) ? Text.literal("ERROR") : null));
+						entry = configBuilder.entryBuilder().startLongField(translate(p), p.get()).setDefaultValue(p.getDefaultValue()).setSaveConsumer(p::set).setErrorSupplier(a -> Optional.ofNullable(!p.isValid(a) ? Text.literal("ERROR") : null));
 					} else if (property instanceof StringProperty p) {
-						entry = configBuilder.entryBuilder().startStrField(Text.of(p.getName()), p.get()).setDefaultValue(p.getDefaultValue()).setSaveConsumer(p::set).setErrorSupplier(a -> Optional.ofNullable(!p.isValid(a) ? Text.literal("ERROR") : null));
+						entry = configBuilder.entryBuilder().startStrField(translate(p), p.get()).setDefaultValue(p.getDefaultValue()).setSaveConsumer(p::set).setErrorSupplier(a -> Optional.ofNullable(!p.isValid(a) ? Text.literal("ERROR") : null));
 					} else if (property instanceof ListProperty p) {
 						if (p.getType() == ListProperty.BOOL) {
 
 						} else if (p.getType() == ListProperty.INT) {
-							entry = configBuilder.entryBuilder().startIntList(Text.of(p.getName()), (List) p.get()).setDefaultValue(p.getDefaultValue()).setSaveConsumer(p::set).setErrorSupplier(a -> Optional.ofNullable(!p.isValid(a) ? Text.literal("ERROR") : null));
+							entry = configBuilder.entryBuilder().startIntList(translate(p), (List) p.get()).setDefaultValue(p.getDefaultValue()).setSaveConsumer(p::set).setErrorSupplier(a -> Optional.ofNullable(!p.isValid(a) ? Text.literal("ERROR") : null));
 						} else if (p.getType() == ListProperty.DOUBLE) {
-							entry = configBuilder.entryBuilder().startDoubleList(Text.of(p.getName()), (List) p.get()).setDefaultValue(p.getDefaultValue()).setSaveConsumer(p::set).setErrorSupplier(a -> Optional.ofNullable(!p.isValid(a) ? Text.literal("ERROR") : null));
+							entry = configBuilder.entryBuilder().startDoubleList(translate(p), (List) p.get()).setDefaultValue(p.getDefaultValue()).setSaveConsumer(p::set).setErrorSupplier(a -> Optional.ofNullable(!p.isValid(a) ? Text.literal("ERROR") : null));
 						} else if (p.getType() == ListProperty.LONG) {
-							entry = configBuilder.entryBuilder().startLongList(Text.of(p.getName()), (List) p.get()).setDefaultValue(p.getDefaultValue()).setSaveConsumer(p::set).setErrorSupplier(a -> Optional.ofNullable(!p.isValid(a) ? Text.literal("ERROR") : null));
+							entry = configBuilder.entryBuilder().startLongList(translate(p), (List) p.get()).setDefaultValue(p.getDefaultValue()).setSaveConsumer(p::set).setErrorSupplier(a -> Optional.ofNullable(!p.isValid(a) ? Text.literal("ERROR") : null));
 						} else if (p.getType() == ListProperty.STRING) {
-							entry = configBuilder.entryBuilder().startStrList(Text.of(p.getName()), (List) p.get()).setDefaultValue(p.getDefaultValue()).setSaveConsumer(p::set).setErrorSupplier(a -> Optional.ofNullable(!p.isValid(a) ? Text.literal("ERROR") : null));
+							entry = configBuilder.entryBuilder().startStrList(translate(p), (List) p.get()).setDefaultValue(p.getDefaultValue()).setSaveConsumer(p::set).setErrorSupplier(a -> Optional.ofNullable(!p.isValid(a) ? Text.literal("ERROR") : null));
 						}
 					} else {
-						System.out.println("ERROR");
+						System.out.println("ERROR type of entry is " + property.getClass());
 					}
 					if (entry != null) {
 						category.addEntry(entry.setTooltip(Text.of(property.getComment())).build());
@@ -85,6 +84,16 @@ public class FrameworkCloth {
 		future.configScreen = build;
 		future.spitQueue();
 		return build;
+	}
+
+	private Text translate(AbstractProperty<?> p) {
+		String f = "";
+		for (String s : p.getPath()) {
+			if (!"common".equals(s)) // TODO special casing
+			f += s + "/";
+		}
+		f = f.substring(0, f.length()-1);
+		return Text.translatableWithFallback(p.getTranslationKey(), f);
 	}
 
 //	private static Screen createConfigScreen(ConfigBuilder prevConfigBuilder, AbstractProperty<?> property, String path, Future prevFuture) {

@@ -3,6 +3,9 @@ package com.jab125.clothintegration.platform;
 //#if LOADER<=FORGE
 //$$ import net.minecraftforge.fml.ModContainer;
 //$$ import net.minecraftforge.fml.ModList;
+//$$ import net.minecraftforge.forgespi.language.IModInfo;
+//$$ import net.minecraftforge.fml.loading.LoadingModList;
+//$$ import java.util.ArrayList;
 //#endif
 import java.util.Comparator;
 import java.util.List;
@@ -101,13 +104,22 @@ public class PlatformUtil {
         //#endif
     }
 
+    //#if LOADER <= FORGE
+    //$$ private static List<IModInfo> cachedForgeModList;
+    //$$ // Forge has 2 mod lists.
+    //$$ private static List<IModInfo> getForgeMods() {
+    //$$	 if (cachedForgeModList == null) {
+    //$$		 cachedForgeModList = new ArrayList<>(LoadingModList.get().getMods());
+    //$$	 }
+    //$$	 return cachedForgeModList;
+    //$$ }
+    //#endif
+
     public static List<Mod> getModList() {
         //#if LOADER == FABRIC
         return FabricLoader.getInstance().getAllMods().stream().map(mod -> getMod(mod.getMetadata().getId()).get()).sorted(Comparator.comparing(Mod::getId)).collect(Collectors.toList());
-        //#elseif LOADER == QUILT
-        //$$ return QuiltLoader.getAllMods().stream().map(mod -> getMod(mod.metadata().id()).sorted(Comparator.comparing((Function<Mod, String>) Mod::getId)).collect(Collectors.toList());
         //#else
-        //$$ return getForgeMods().stream().map(mod -> getMod(mod.getModId()).sorted(Comparator.comparing((Function<Mod, String>) Mod::getId)).collect(Collectors.toList());
+        //$$ return getForgeMods().stream().map(mod -> getMod(mod.getModId()).get()).sorted(Comparator.comparing((Function<Mod, String>) Mod::getId)).collect(Collectors.toList());
         //#endif
     }
 
