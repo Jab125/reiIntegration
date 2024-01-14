@@ -407,42 +407,42 @@ loom {
 }
 
 
-curseforge {
-    apiKey = CF_KEY
-    project {
-        id = "0"
-        changelog = CHANGELOG
-        releaseType = "beta"
-        //addGameVersion "Forge", "Fabric", "Client", "Java 17"
-        //  addGameVersion "Client"
-        addGameVersion loader == 0 ? "Forge" : loader == 1 ? "Fabric" : loader == 2 ? "Quilt" : loader == -1 ? "NeoForge" : nodontdothat()
-        addGameVersion project.name.split("-")[0]
-        addGameVersion "Java " + (mcVersion >= 11800 ? 17 : mcVersion >= 11700 ? 16 : 8)
-        mainArtifact(signRemapJar.output) {
-            displayName = "[${project.name.split('-')[0]}] Cloth Integration ${version} for ${loader == 0 ? "Forge" : loader == 1 ? "Fabric" : loader == 2 ? "Quilt" : loader == -1 ? "NeoForge" : nodontdothat()}"
-            if (loader >= 1) {
-                relations {
-                    if (loader == 1) {
-                        requiredDependency 'fabric-api'
-                    } else if (loader == 2) {
-                        requiredDependency 'qsl'
-                    }
-                }
-            }
-        }
-    }
-
-    options {
-        debug = false
-        forgeGradleIntegration = false
-    }
-}
+//curseforge {
+//    apiKey = CF_KEY
+//    project {
+//        id = "0"
+//        changelog = CHANGELOG
+//        releaseType = "beta"
+//        //addGameVersion "Forge", "Fabric", "Client", "Java 17"
+//        //  addGameVersion "Client"
+//        addGameVersion loader == 0 ? "Forge" : loader == 1 ? "Fabric" : loader == 2 ? "Quilt" : loader == -1 ? "NeoForge" : nodontdothat()
+//        addGameVersion project.name.split("-")[0]
+//        addGameVersion "Java " + (mcVersion >= 11800 ? 17 : mcVersion >= 11700 ? 16 : 8)
+//        mainArtifact(signRemapJar.output) {
+//            displayName = "[${project.name.split('-')[0]}] Roughly Enough Config Screens ${version} for ${loader == 0 ? "Forge" : loader == 1 ? "Fabric" : loader == 2 ? "Quilt" : loader == -1 ? "NeoForge" : nodontdothat()}"
+//            if (loader >= 1) {
+//                relations {
+//                    if (loader == 1) {
+//                        requiredDependency 'fabric-api'
+//                    } else if (loader == 2) {
+//                        requiredDependency 'qsl'
+//                    }
+//                }
+//            }
+//        }
+//    }
+//
+//    options {
+//        debug = false
+//        forgeGradleIntegration = false
+//    }
+//}
 
 modrinth {
     token = MR_KEY // This is the default. Remember to have the MODRINTH_TOKEN environment variable set or else this will fail, or set it to whatever you want - just make sure it stays private!
-    projectId = "0" // This can be the project ID or the slug. Either will work!
+    projectId = "VbyJLvvb" // This can be the project ID or the slug. Either will work!
     versionNumber = version // You don't need to set this manually. Will fail if Modrinth has this version already
-    versionName = "[${project.name.split('-')[0]}] Cloth Integration ${version} for ${loader == 0 ? "Forge" : loader == 1 ? "Fabric" : loader == 2 ? "Quilt" : loader == -1 ? "NeoForge" : nodontdothat()}"
+    versionName = "[${project.name.split('-')[0]}] Roughly Enough Config Screens ${version} for ${loader == 0 ? "Forge" : loader == 1 ? "Fabric" : loader == 2 ? "Quilt" : loader == -1 ? "NeoForge" : nodontdothat()}"
     versionType = "beta" // This is the default -- can also be `beta` or `alpha`
     uploadFile = signRemapJar.output // With Loom, this MUST be set to `remapJar` instead of `jar`!
     gameVersions = [project.name.split("-")[0]] // Must be an array, even with only one version
