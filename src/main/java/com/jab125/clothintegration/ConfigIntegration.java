@@ -1,7 +1,7 @@
 package com.jab125.clothintegration;
 
 //#if LOADER <= FORGE
-import com.jab125.clothintegration.forge.ForgeIntegration;
+//$$ import com.jab125.clothintegration.forge.ForgeIntegration;
 //#endif
 import com.jab125.clothintegration.jei.JeiIntegration;
 import com.jab125.clothintegration.minecraft.MinecraftIntegration;
@@ -22,7 +22,7 @@ public class ConfigIntegration {
         if (PlatformUtil.isModInstalled("jei")) new JeiIntegration();
         if (!PlatformUtil.getLoader().isFabricLike()) new MinecraftIntegration();
         //#if LOADER <= FORGE
-        new ForgeIntegration();
+        //$$ new ForgeIntegration();
         //#endif
     }
 }

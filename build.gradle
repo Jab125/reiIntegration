@@ -146,6 +146,16 @@ repositories {
             includeGroup "curse.maven"
         }
     }
+
+    maven {
+        name = "MrCrayfish (GitHub)"
+        url = "https://maven.pkg.github.com/MrCrayfish/Maven"
+        credentials {
+        }
+        content {
+            includeGroup "com.mrcrayfish"
+        }
+    }
 }
 
 apply plugin: "me.modmuss50.remotesign"
@@ -208,6 +218,7 @@ dependencies {
         modImplementation 'net.fabricmc:fabric-loader:0.14.21'
         def fabricApiVersion = project.properties.fabricApi
         modImplementation "net.fabricmc.fabric-api:fabric-api:$fabricApiVersion"
+        modImplementation "com.mrcrayfish:framework-fabric:${project.properties.minecraft}-0.6.15"
     } else if (loader == 2) {
 //        modImplementation 'org.quiltmc:quilt-loader:0.19.0-beta.11'
 //        def quiltedFabricApiVersion = [

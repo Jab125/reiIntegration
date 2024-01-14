@@ -6,9 +6,10 @@
   "client": [
   ],
   "mixins": [
+    "AbstractConfigScreenAccessor",
+    "BackpackedForcedConfigScreenMixin",
     "EnumSerializerAccessor",
-    "IntegerSerializerAccessor",
-    "AbstractConfigScreenAccessor"
+    "IntegerSerializerAccessor"
   ],
   "injectors": {
     "maxShiftBy": 5,
