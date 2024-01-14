@@ -4,7 +4,11 @@ package com.jab125.clothintegration.platform;
 //$$ import net.minecraftforge.fml.ModContainer;
 //$$ import net.minecraftforge.fml.ModList;
 //#endif
+import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 //#if LOADER>=FABRIC
 import net.fabricmc.loader.api.FabricLoader;
@@ -94,6 +98,16 @@ public class PlatformUtil {
         //$$ return Loader.FORGE;
         //#elseif LOADER==FABRIC
         return isModInstalled("quiltloader") ? Loader.QUILT : Loader.FABRIC;
+        //#endif
+    }
+
+    public static List<Mod> getModList() {
+        //#if LOADER == FABRIC
+        return FabricLoader.getInstance().getAllMods().stream().map(mod -> getMod(mod.getMetadata().getId()).get()).sorted(Comparator.comparing(Mod::getId)).collect(Collectors.toList());
+        //#elseif LOADER == QUILT
+        //$$ return QuiltLoader.getAllMods().stream().map(mod -> getMod(mod.metadata().id()).sorted(Comparator.comparing((Function<Mod, String>) Mod::getId)).collect(Collectors.toList());
+        //#else
+        //$$ return getForgeMods().stream().map(mod -> getMod(mod.getModId()).sorted(Comparator.comparing((Function<Mod, String>) Mod::getId)).collect(Collectors.toList());
         //#endif
     }
 
