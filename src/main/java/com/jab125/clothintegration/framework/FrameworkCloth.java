@@ -2,6 +2,8 @@ package com.jab125.clothintegration.framework;
 
 import com.jab125.clothintegration.cloth.ButtonBuilder;
 import com.jab125.clothintegration.mixin.AbstractConfigScreenAccessor;
+import com.jab125.clothintegration.platform.Mod;
+import com.jab125.clothintegration.platform.PlatformUtil;
 import com.jab125.clothintegration.util.StringUtils;
 import com.mrcrayfish.framework.api.config.*;
 import com.mrcrayfish.framework.config.FrameworkConfigManager;
@@ -24,11 +26,11 @@ public class FrameworkCloth {
 		Future future = new Future();
 		ConfigBuilder configBuilder1 = ConfigBuilder.create();
 		configBuilder1.setParentScreen(prev);
-		configBuilder1.setTitle(Text.of(id));
+		configBuilder1.setTitle(Text.of(PlatformUtil.getMod(id).map(Mod::getName).orElse(id)));
 		configBuilder1.setEditable(false);
 		for (FrameworkConfigManager.FrameworkConfigImpl impl : impls) {
 			ConfigBuilder configBuilder = ConfigBuilder.create();
-			configBuilder.setTitle(Text.of(impl.getFileName()));
+			configBuilder.setTitle(Text.empty().append(configBuilder1.getTitle()).append(" / ").append(StringUtils.convertToSentence(impl.getName().getPath())));
 			configBuilder.setEditable(!impl.isReadOnly());
 			future.setIfPresent(configBuilder);
 			ConfigCategory category = configBuilder.getOrCreateCategory(Text.of(impl.getName().getPath()));
