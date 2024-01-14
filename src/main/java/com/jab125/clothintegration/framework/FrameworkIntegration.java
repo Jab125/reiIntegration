@@ -1,6 +1,7 @@
 package com.jab125.clothintegration.framework;
 
 import com.jab125.clothintegration.Integration;
+import com.jab125.clothintegration.platform.ConfigScreenUtil;
 import com.jab125.clothintegration.platform.Mod;
 import com.jab125.clothintegration.platform.PlatformUtil;
 import com.mrcrayfish.framework.api.config.event.FrameworkConfigEvents;
@@ -27,7 +28,7 @@ public class FrameworkIntegration extends Integration {
 		}
 		for (Map.Entry<String, List<FrameworkConfigManager.FrameworkConfigImpl>> stringListEntry : theMap.entrySet()) {
 			String modid = stringListEntry.getKey();
-			frameworkCloth.createScreen(null, modid, stringListEntry.getValue());
+			ConfigScreenUtil.addConfigScreenToMod(modid, prev -> frameworkCloth.createScreen(null, modid, stringListEntry.getValue()));
 		}
 	}
 	@Override

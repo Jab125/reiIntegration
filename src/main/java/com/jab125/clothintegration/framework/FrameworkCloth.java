@@ -32,47 +32,54 @@ public class FrameworkCloth {
 			configBuilder1.setEditable(!impl.isReadOnly());
 			future.setIfPresent(configBuilder);
 			ConfigCategory category = configBuilder.getOrCreateCategory(Text.of(impl.getName().getPath()));
-			Set<AbstractProperty<?>> allProperties = impl.getAllProperties();
-			AbstractFieldBuilder<?, ?, ?> entry = null;
-			for (AbstractProperty<?> property : allProperties) {
-				if (property instanceof BoolProperty p) {
-					entry = configBuilder.entryBuilder().startBooleanToggle(Text.of(p.getName()), p.get()).setDefaultValue(p.getDefaultValue()).setSaveConsumer(p::set).setErrorSupplier(a -> Optional.ofNullable(!p.isValid(a) ? Text.literal("ERROR") : null));
-				}
-				if (property instanceof DoubleProperty p) {
-					entry = configBuilder.entryBuilder().startDoubleField(Text.of(p.getName()), p.get()).setDefaultValue(p.getDefaultValue()).setSaveConsumer(p::set).setErrorSupplier(a -> Optional.ofNullable(!p.isValid(a) ? Text.literal("ERROR") : null));
-				} else if (property instanceof EnumProperty r) {
-					EnumProperty<T> p = r;
-					Class<T> clazz = p.getDefaultValue().getDeclaringClass();
-					entry = configBuilder.entryBuilder().startEnumSelector(Text.of(p.getName()), clazz, p.getDefaultValue()).setDefaultValue(p.getDefaultValue()).setSaveConsumer(p::set).setErrorSupplier(a -> Optional.ofNullable(!p.isValid(a) ? Text.literal("ERROR") : null));
-				} else if (property instanceof IntProperty p) {
-					entry = configBuilder.entryBuilder().startIntField(Text.of(p.getName()), p.get()).setDefaultValue(p.getDefaultValue()).setSaveConsumer(p::set).setErrorSupplier(a -> Optional.ofNullable(!p.isValid(a) ? Text.literal("ERROR") : null));
-				} else if (property instanceof LongProperty p) {
-					entry = configBuilder.entryBuilder().startLongField(Text.of(p.getName()), p.get()).setDefaultValue(p.getDefaultValue()).setSaveConsumer(p::set).setErrorSupplier(a -> Optional.ofNullable(!p.isValid(a) ? Text.literal("ERROR") : null));
-				} else if (property instanceof StringProperty p) {
-					entry = configBuilder.entryBuilder().startStrField(Text.of(p.getName()), p.get()).setDefaultValue(p.getDefaultValue()).setSaveConsumer(p::set).setErrorSupplier(a -> Optional.ofNullable(!p.isValid(a) ? Text.literal("ERROR") : null));
-				} else if (property instanceof ListProperty p) {
-					if (p.getType() == ListProperty.BOOL) {
-
-					} else if (p.getType() == ListProperty.INT) {
-						entry = configBuilder.entryBuilder().startIntList(Text.of(p.getName()), (List) p.get()).setDefaultValue(p.getDefaultValue()).setSaveConsumer(p::set).setErrorSupplier(a -> Optional.ofNullable(!p.isValid(a) ? Text.literal("ERROR") : null));
-					} else if (p.getType() == ListProperty.DOUBLE) {
-						entry = configBuilder.entryBuilder().startDoubleList(Text.of(p.getName()), (List) p.get()).setDefaultValue(p.getDefaultValue()).setSaveConsumer(p::set).setErrorSupplier(a -> Optional.ofNullable(!p.isValid(a) ? Text.literal("ERROR") : null));
-					} else if (p.getType() == ListProperty.LONG) {
-						entry = configBuilder.entryBuilder().startLongList(Text.of(p.getName()), (List) p.get()).setDefaultValue(p.getDefaultValue()).setSaveConsumer(p::set).setErrorSupplier(a -> Optional.ofNullable(!p.isValid(a) ? Text.literal("ERROR") : null));
-					} else if (p.getType() == ListProperty.STRING) {
-						entry = configBuilder.entryBuilder().startStrList(Text.of(p.getName()), (List) p.get()).setDefaultValue(p.getDefaultValue()).setSaveConsumer(p::set).setErrorSupplier(a -> Optional.ofNullable(!p.isValid(a) ? Text.literal("ERROR") : null));
+			if (impl.isLoaded()) {
+				Set<AbstractProperty<?>> allProperties = impl.getAllProperties();
+				AbstractFieldBuilder<?, ?, ?> entry = null;
+				for (AbstractProperty<?> property : allProperties) {
+					if (property instanceof BoolProperty p) {
+						entry = configBuilder.entryBuilder().startBooleanToggle(Text.of(p.getName()), p.get()).setDefaultValue(p.getDefaultValue()).setSaveConsumer(p::set).setErrorSupplier(a -> Optional.ofNullable(!p.isValid(a) ? Text.literal("ERROR") : null));
 					}
-				} else {
-					System.out.println("ERROR");
+					if (property instanceof DoubleProperty p) {
+						entry = configBuilder.entryBuilder().startDoubleField(Text.of(p.getName()), p.get()).setDefaultValue(p.getDefaultValue()).setSaveConsumer(p::set).setErrorSupplier(a -> Optional.ofNullable(!p.isValid(a) ? Text.literal("ERROR") : null));
+					} else if (property instanceof EnumProperty r) {
+						EnumProperty<T> p = r;
+						Class<T> clazz = p.getDefaultValue().getDeclaringClass();
+						entry = configBuilder.entryBuilder().startEnumSelector(Text.of(p.getName()), clazz, p.getDefaultValue()).setDefaultValue(p.getDefaultValue()).setSaveConsumer(p::set).setErrorSupplier(a -> Optional.ofNullable(!p.isValid(a) ? Text.literal("ERROR") : null));
+					} else if (property instanceof IntProperty p) {
+						entry = configBuilder.entryBuilder().startIntField(Text.of(p.getName()), p.get()).setDefaultValue(p.getDefaultValue()).setSaveConsumer(p::set).setErrorSupplier(a -> Optional.ofNullable(!p.isValid(a) ? Text.literal("ERROR") : null));
+					} else if (property instanceof LongProperty p) {
+						entry = configBuilder.entryBuilder().startLongField(Text.of(p.getName()), p.get()).setDefaultValue(p.getDefaultValue()).setSaveConsumer(p::set).setErrorSupplier(a -> Optional.ofNullable(!p.isValid(a) ? Text.literal("ERROR") : null));
+					} else if (property instanceof StringProperty p) {
+						entry = configBuilder.entryBuilder().startStrField(Text.of(p.getName()), p.get()).setDefaultValue(p.getDefaultValue()).setSaveConsumer(p::set).setErrorSupplier(a -> Optional.ofNullable(!p.isValid(a) ? Text.literal("ERROR") : null));
+					} else if (property instanceof ListProperty p) {
+						if (p.getType() == ListProperty.BOOL) {
+
+						} else if (p.getType() == ListProperty.INT) {
+							entry = configBuilder.entryBuilder().startIntList(Text.of(p.getName()), (List) p.get()).setDefaultValue(p.getDefaultValue()).setSaveConsumer(p::set).setErrorSupplier(a -> Optional.ofNullable(!p.isValid(a) ? Text.literal("ERROR") : null));
+						} else if (p.getType() == ListProperty.DOUBLE) {
+							entry = configBuilder.entryBuilder().startDoubleList(Text.of(p.getName()), (List) p.get()).setDefaultValue(p.getDefaultValue()).setSaveConsumer(p::set).setErrorSupplier(a -> Optional.ofNullable(!p.isValid(a) ? Text.literal("ERROR") : null));
+						} else if (p.getType() == ListProperty.LONG) {
+							entry = configBuilder.entryBuilder().startLongList(Text.of(p.getName()), (List) p.get()).setDefaultValue(p.getDefaultValue()).setSaveConsumer(p::set).setErrorSupplier(a -> Optional.ofNullable(!p.isValid(a) ? Text.literal("ERROR") : null));
+						} else if (p.getType() == ListProperty.STRING) {
+							entry = configBuilder.entryBuilder().startStrList(Text.of(p.getName()), (List) p.get()).setDefaultValue(p.getDefaultValue()).setSaveConsumer(p::set).setErrorSupplier(a -> Optional.ofNullable(!p.isValid(a) ? Text.literal("ERROR") : null));
+						}
+					} else {
+						System.out.println("ERROR");
+					}
+					if (entry != null) {
+						category.addEntry(entry.setTooltip(Text.of(property.getComment())).build());
+					}
 				}
-				if (entry != null) {
-					category.addEntry(entry.setTooltip(Text.of(property.getComment())).build());
-				}
+				ConfigCategory main = configBuilder1.getOrCreateCategory(Text.of("Main"));
+				AbstractConfigScreen build = (AbstractConfigScreen) configBuilder.build();
+				main.addEntry(new ButtonBuilder(Text.literal(StringUtils.convertToSentence(impl.getName().getPath())).formatted(Formatting.BOLD), a -> MinecraftClient.getInstance().setScreen(build)).build());
+				future.queue.add(build);
+			} else {
+				ConfigCategory main = configBuilder1.getOrCreateCategory(Text.of("Main"));
+				AbstractConfigScreen build = (AbstractConfigScreen) configBuilder.build();
+				main.addEntry(new ButtonBuilder(Text.literal(StringUtils.convertToSentence(impl.getName().getPath())).formatted(Formatting.BOLD), a -> {}).setRequirement(() -> false).build());
+				future.queue.add(build);
 			}
-			ConfigCategory main = configBuilder1.getOrCreateCategory(Text.of("Main"));
-			AbstractConfigScreen build = (AbstractConfigScreen) configBuilder.build();
-			main.addEntry(new ButtonBuilder(Text.literal(StringUtils.convertToSentence(impl.getName().getPath())).formatted(Formatting.BOLD), a -> MinecraftClient.getInstance().setScreen(build)).build());
-			future.queue.add(build);
 		}
 		Screen build = configBuilder1.build();
 		future.configScreen = build;
