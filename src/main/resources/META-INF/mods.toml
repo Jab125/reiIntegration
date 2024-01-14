@@ -35,7 +35,7 @@ versionRange="$jeiDep"
 ordering="NONE"
 side="BOTH"
 
-[[dependencies.clothintegration]]
+[[dependencies.roughlyenoughconfigscreens]]
 modId="cloth_config"
 mandatory=true
 versionRange="$clothConfigDep"
