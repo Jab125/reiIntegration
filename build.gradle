@@ -225,6 +225,8 @@ dependencies {
 //                11904: '6.0.0-beta.6+0.79.0-1.19.4'
 //        ][mcVersion]
 //        modImplementation "org.quiltmc.quilted-fabric-api:quilted-fabric-api:$quiltedFabricApiVersion"
+    } else {
+        modImplementation "com.mrcrayfish:framework-forge:${project.properties.minecraft}-0.6.15"
     }
 
     if (loader >= 1) { // fabric or quilt
