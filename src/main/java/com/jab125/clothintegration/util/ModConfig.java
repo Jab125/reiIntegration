@@ -18,8 +18,7 @@ public class ModConfig implements ConfigData {
 			"roughlyenoughconfigscreens:jei",
 			//#if LOADER <= FORGE
 			//$$ "roughlyenoughconfigscreens:forge",
-			//#else
-			"roughlyenoughconfigscreens:minecraft",
+			//$$ "roughlyenoughconfigscreens:minecraft",
 			//#endif
 			"roughlyenoughconfigscreens:framework"
 	));
