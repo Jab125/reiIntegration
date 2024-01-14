@@ -18,7 +18,7 @@
 //$$ public class ForgeIntegration extends Integration {
 //$$
 //$$     @Override
-//$$     private void init() {
+//$$     public void init() {
 //$$         ForgeCloth forgeCloth = new ForgeCloth();
 //$$         ModList.get().forEachModContainer((s, container) -> {
 //$$             if (getConfigs(container).isEmpty()) return;
