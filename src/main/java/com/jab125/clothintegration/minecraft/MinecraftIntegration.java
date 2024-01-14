@@ -9,11 +9,15 @@ import net.minecraft.util.Identifier;
 public class MinecraftIntegration extends Integration {
     public MinecraftIntegration() {
         super();
+    }
+
+    @Override
+    protected void init() {
         ConfigScreenUtil.addConfigScreenToMod("minecraft", s -> new OptionsScreen(s, MinecraftClient.getInstance().options));
     }
 
     @Override
     protected Identifier getId() {
-        return new Identifier("clothintegration:minecraft");
+        return new Identifier("roughlyenoughconfigscreens:minecraft");
     }
 }

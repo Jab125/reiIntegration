@@ -14,11 +14,9 @@ import java.util.List;
 import java.util.Map;
 
 public class FrameworkIntegration extends Integration {
-	public FrameworkIntegration() {
-		init();
-	}
 
-	private void init() {
+	@Override
+	protected void init() {
 		FrameworkCloth frameworkCloth = new FrameworkCloth();
 		List<FrameworkConfigManager.FrameworkConfigImpl> configs = FrameworkConfigManager.getInstance().getConfigs();
 		Map<String, List<FrameworkConfigManager.FrameworkConfigImpl>> theMap = new HashMap<>();
@@ -33,6 +31,6 @@ public class FrameworkIntegration extends Integration {
 	}
 	@Override
 	protected Identifier getId() {
-		return new Identifier("clothintegration:framework");
+		return new Identifier("roughlyenoughconfigscreens:framework");
 	}
 }

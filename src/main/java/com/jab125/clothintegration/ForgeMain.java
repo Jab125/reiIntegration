@@ -22,7 +22,7 @@
         //$$ PlatformUtil.assertNeoForge();
         //#endif
 //$$         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
-//$$         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, TestConfig.CLIENT_SPEC);
+//$$         // ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, TestConfig.CLIENT_SPEC);
 //$$         bus.addListener(this::loaded);
 //$$     }
 //$$

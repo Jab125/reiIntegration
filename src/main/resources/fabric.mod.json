@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "id": "clothintegration",
+  "id": "roughlyenoughconfigscreens",
   "version": "${version}",
-  "name": "Cloth Integration",
+  "name": "Roughly Enough Config Screens",
   "description": "Adds a configuration screen for JEI using Cloth Config.",
   "accessWidener": "clothintegration.accesswidener",
   "authors": [
@@ -11,7 +11,7 @@
   "contact": {
   },
   "license": "All Rights Reserved",
-  "icon": "assets/clothintegration/icon.png",
+  "icon": "recs.png",
   "environment": "*",
   "entrypoints": {
     "client": [

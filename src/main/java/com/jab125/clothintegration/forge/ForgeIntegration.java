@@ -17,11 +17,7 @@
 //$$
 //$$ public class ForgeIntegration extends Integration {
 //$$
-//$$     public ForgeIntegration() {
-//$$         super();
-//$$         init();
-//$$     }
-//$$
+//$$     @Override
 //$$     private void init() {
 //$$         ForgeCloth forgeCloth = new ForgeCloth();
 //$$         ModList.get().forEachModContainer((s, container) -> {
@@ -33,7 +29,7 @@
 //$$
 //$$     @Override
 //$$     protected Identifier getId() {
-//$$         return new Identifier("clothintegration:forge");
+//$$         return new Identifier("roughlyenoughconfigscreens:forge");
 //$$     }
 //$$
 //$$     private static EnumMap<ModConfig.Type, ModConfig> getConfigs(ModContainer container) {

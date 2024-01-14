@@ -5,10 +5,12 @@ import com.jab125.clothintegration.platform.ConfigScreenUtil;
 import net.minecraft.util.Identifier;
 
 public class JeiIntegration extends Integration {
-    public JeiIntegration() {
-        super();
+
+    @Override
+    protected void init() {
         setupIntegration();
     }
+
     private void setupIntegration() {
         JeiCloth jeiCloth = new JeiCloth();
         ConfigScreenUtil.addConfigScreenToMod("jei", jeiCloth::createScreen);
@@ -16,6 +18,6 @@ public class JeiIntegration extends Integration {
 
     @Override
     protected Identifier getId() {
-        return new Identifier("clothintegration:jei");
+        return new Identifier("roughlyenoughconfigscreens:jei");
     }
 }

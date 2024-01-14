@@ -4,31 +4,31 @@ loaderVersion = "*"
 license = "All Rights Reserved"
 
 [[mods]]
-modId = "clothintegration"
+modId = "roughlyenoughconfigscreens"
 version = "${version}"
-displayName = "Cloth Integration"
+displayName = "Roughly Enough Config Screens"
 authors = "Jab125"
 description = '''
-Automatically creates config screens for mods that use the forge config system.
+Automatically creates config screens for mods that use either the Forge config system or the Framework config system.
 Also supports JEI.
 '''
-#logoFile = ""
+logoFile="recs.png"
 
-[[dependencies.clothintegration]]
+[[dependencies.roughlyenoughconfigscreens]]
 modId = "forge"
 mandatory = true
 versionRange = "$forge"
 ordering = "NONE"
 side = "BOTH"
 
-[[dependencies.clothintegration]]
+[[dependencies.roughlyenoughconfigscreens]]
 modId = "minecraft"
 mandatory = true
 versionRange = "$minecraftVersion"
 ordering = "NONE"
 side = "BOTH"
 
-[[dependencies.clothintegration]]
+[[dependencies.roughlyenoughconfigscreens]]
 modId="jei"
 mandatory=true
 versionRange="$jeiDep"

@@ -6,11 +6,15 @@ package com.jab125.clothintegration;
 import com.jab125.clothintegration.framework.FrameworkIntegration;
 import com.jab125.clothintegration.jei.JeiIntegration;
 import com.jab125.clothintegration.minecraft.MinecraftIntegration;
+import com.jab125.clothintegration.platform.ConfigScreenUtil;
 import com.jab125.clothintegration.platform.PlatformUtil;
+import com.jab125.clothintegration.util.ModConfig;
+import me.shedaniel.autoconfig.AutoConfig;
+import me.shedaniel.autoconfig.ConfigHolder;
+import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 
 public class ConfigIntegration {
     public static ConfigIntegration INSTANCE;
-
     public static void init() {
         if (INSTANCE != null) {
             System.out.println("[ConfigIntegration] Already Initialized!");
@@ -20,6 +24,7 @@ public class ConfigIntegration {
     }
 
     private ConfigIntegration() {
+        ModConfig.a90();
         if (PlatformUtil.isModInstalled("jei") && !PlatformUtil.isModInstalled("rei_plugin_compatibilities")) new JeiIntegration();
         if (!PlatformUtil.getLoader().isFabricLike()) new MinecraftIntegration();
         //#if LOADER <= FORGE

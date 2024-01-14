@@ -2,8 +2,10 @@
 package com.jab125.clothintegration.platform;
 
 import com.jab125.clothintegration.ConfigIntegration;
+import com.jab125.clothintegration.util.ModConfig;
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
+import me.shedaniel.autoconfig.AutoConfig;
 import net.minecraft.client.gui.screen.Screen;
 import org.jetbrains.annotations.NotNull;
 
@@ -21,6 +23,11 @@ public class ModMenuCompat implements ModMenuApi {
             factoryMap.putIfAbsent(stringFunctionEntry.getKey(), v -> stringFunctionEntry.getValue().apply(v));
         }
         return factoryMap;
+    }
+
+    @Override
+    public ConfigScreenFactory<?> getModConfigScreenFactory() {
+        return getProvidedConfigScreenFactories().get("roughlyenoughconfigscreens");
     }
 }
 //#endif
