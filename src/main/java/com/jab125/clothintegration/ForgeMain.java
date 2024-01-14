@@ -14,7 +14,7 @@
 //$$ import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 //$$ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 //$$
-//$$ @Mod("clothintegration")
+//$$ @Mod("roughlyenoughconfigscreens")
 //$$ public class ForgeMain {
 //$$
 //$$     public ForgeMain() {
