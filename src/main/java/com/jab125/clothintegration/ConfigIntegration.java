@@ -20,7 +20,7 @@ public class ConfigIntegration {
     }
 
     private ConfigIntegration() {
-        if (PlatformUtil.isModInstalled("jei")) new JeiIntegration();
+        if (PlatformUtil.isModInstalled("jei") && !PlatformUtil.isModInstalled("rei_plugin_compatibilities")) new JeiIntegration();
         if (!PlatformUtil.getLoader().isFabricLike()) new MinecraftIntegration();
         //#if LOADER <= FORGE
         //$$ new ForgeIntegration();
