@@ -461,3 +461,5 @@ modrinth {
     }
     debugMode = false
 }
+
+tasks.modrinth.mustRunAfter(tasks.signRemapJar)
