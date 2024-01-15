@@ -194,7 +194,7 @@ tasks.withType(JavaCompile).configureEach {
     if (mcVersion >= 11700)
         options.release = mcVersion >= 11800 ? 17 : mcVersion >= 11700 ? 16 : 8
 }
-archivesBaseName = "clothintegration-" + mcVersionStr + "-" + (loader == -1 ? "neo" : loader == 0 ? "forge" : loader == 1 ? "fabric" : loader == 2 ? "quilt" : nodontdothat())
+archivesBaseName = "roughly-enough-config-screens-" + mcVersionStr + "-" + (loader == -1 ? "neo" : loader == 0 ? "forge" : loader == 1 ? "fabric" : loader == 2 ? "quilt" : nodontdothat())
 
 loom {
     //accessWidenerPath = getRootProject().projectDir.toPath().resolve("src/main/resources/modpack-update-checker.accesswidener").toFile()
