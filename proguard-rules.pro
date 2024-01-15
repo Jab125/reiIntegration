@@ -25,6 +25,9 @@
 -keep class com.jab125.clothintegration.jei.JeiPlugin {
 }
 
+-keep class com.jab125.clothintegration.platform.ModMenuCompat {
+}
+
 -keep,allowobfuscation class ** {
     *;
 }
