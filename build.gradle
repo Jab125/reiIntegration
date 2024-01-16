@@ -465,3 +465,4 @@ modrinth {
 }
 
 tasks.modrinth.mustRunAfter(tasks.signRemapJar)
+tasks.curseforge.mustRunAfter(tasks.signRemapJar)
