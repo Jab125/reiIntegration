@@ -26,7 +26,7 @@ public class FrameworkIntegration extends Integration {
 		}
 		for (Map.Entry<String, List<FrameworkConfigManager.FrameworkConfigImpl>> stringListEntry : theMap.entrySet()) {
 			String modid = stringListEntry.getKey();
-			ConfigScreenUtil.addConfigScreenToMod(modid, prev -> frameworkCloth.createScreen(null, modid, stringListEntry.getValue()));
+			ConfigScreenUtil.addConfigScreenToMod(modid, prev -> frameworkCloth.createScreen(prev, modid, stringListEntry.getValue()));
 		}
 	}
 	@Override
