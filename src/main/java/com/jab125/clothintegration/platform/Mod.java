@@ -5,4 +5,10 @@ public interface Mod {
     String getName();
     String getDescription();
     String getVersion();
+
+    //#if LOADER == FABRIC
+    net.fabricmc.loader.api.ModContainer backing();
+    //#elseif LOADER <= FORGE
+    //$$ // TODO
+    //#endif
 }

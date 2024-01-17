@@ -3,6 +3,7 @@ package com.jab125.clothintegration.jei;
 
 import com.jab125.clothintegration.mixin.EnumSerializerAccessor;
 import com.jab125.clothintegration.mixin.IntegerSerializerAccessor;
+import com.jab125.clothintegration.platform.PlatformUtil;
 import com.jab125.clothintegration.util.ModConfig;
 import com.jab125.clothintegration.util.StringUtils;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
@@ -40,6 +41,7 @@ public class JeiCloth {
      //   MinecraftLocaleSupplier
         ConfigBuilder configBuilder = ConfigBuilder.create();
         ConfigEntryBuilder entryBuilder = configBuilder.entryBuilder();
+        PlatformUtil.getMod("jei").flatMap(PlatformUtil::getConfiguredBackground).ifPresent(configBuilder::setDefaultBackgroundTexture);
         configBuilder.setShouldListSmoothScroll(ModConfig.$().smoothScrolling);
         configBuilder.setShouldTabsSmoothScroll(ModConfig.$().smoothScrolling);
         configBuilder.setParentScreen(prev);

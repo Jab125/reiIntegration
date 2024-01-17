@@ -10,12 +10,13 @@ package com.jab125.clothintegration.platform;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 //#if LOADER>=FABRIC
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
+import net.fabricmc.loader.api.metadata.CustomValue;
+import net.minecraft.util.Identifier;
 //#endif
 
 public class PlatformUtil {
@@ -80,8 +81,30 @@ public class PlatformUtil {
             public String getVersion() {
                 return modContainer.getMetadata().getVersion().getFriendlyString();
             }
+
+            @Override
+            public ModContainer backing() {
+                return modContainer;
+            }
         });
         //#endif
+    }
+
+    public static Optional<Identifier> getConfiguredBackground(Mod mod) {
+        ModContainer container = mod.backing();
+        if (container.getMetadata().containsCustomValue("configured")) {
+            CustomValue configured = container.getMetadata().getCustomValue("configured");
+            if (configured.getType() == CustomValue.CvType.OBJECT) {
+                CustomValue.CvObject configuredObject = configured.getAsObject();
+                if (configuredObject.containsKey("background")) {
+                    CustomValue background = configuredObject.get("background");
+                    if (background.getType() == CustomValue.CvType.STRING) {
+                        return Optional.ofNullable(Identifier.tryParse(background.getAsString()));
+                    }
+                }
+            }
+        }
+        return Optional.empty();
     }
 
     public static void assertNeoForge() {
