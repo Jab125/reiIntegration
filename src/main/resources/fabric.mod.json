@@ -3,7 +3,7 @@
   "id": "roughlyenoughconfigscreens",
   "version": "${version}",
   "name": "Roughly Enough Config Screens",
-  "description": "Adds a configuration screen for JEI using Cloth Config.",
+  "description": "Adds a configuration screen for JEI and Framework using Cloth Config.",
   "accessWidener": "clothintegration.accesswidener",
   "authors": [
     "Jab125"
