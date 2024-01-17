@@ -5,10 +5,11 @@ package com.jab125.clothintegration.platform;
 //$$ import net.minecraftforge.fml.ModList;
 //$$ import net.minecraftforge.forgespi.language.IModInfo;
 //$$ import net.minecraftforge.fml.loading.LoadingModList;
-//$$ import java.util.ArrayList;
 //#endif
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -16,8 +17,8 @@ import java.util.stream.Collectors;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.metadata.CustomValue;
-import net.minecraft.util.Identifier;
 //#endif
+import net.minecraft.util.Identifier;
 
 public class PlatformUtil {
 
@@ -57,6 +58,11 @@ public class PlatformUtil {
         //$$     public String getVersion() {
         //$$         return modContainer.getModInfo().getVersion().toString();
         //$$     }
+        //$$
+        //$$     @Override
+        //$$     public ModContainer backing() {
+        //$$         return modContainer;
+        //$$     }
         //$$ });
         //#else
         ModContainer modContainer = FabricLoader.getInstance().getModContainer(id).get();
@@ -91,6 +97,7 @@ public class PlatformUtil {
     }
 
     public static Optional<Identifier> getConfiguredBackground(Mod mod) {
+        //#if LOADER == FABRIC
         ModContainer container = mod.backing();
         if (container.getMetadata().containsCustomValue("configured")) {
             CustomValue configured = container.getMetadata().getCustomValue("configured");
@@ -104,6 +111,14 @@ public class PlatformUtil {
                 }
             }
         }
+        //#elseif LOADER <= FORGE
+        //$$ Map<String, Object> modProperties = mod.backing().getModInfo().getModProperties();
+        //$$ if (modProperties.containsKey("configuredBackground")) {
+        //$$     if (modProperties.get("configuredBackground") instanceof String str) {
+        //$$         return Optional.ofNullable(Identifier.tryParse(str));
+        //$$     }
+        //$$ }
+        //#endif
         return Optional.empty();
     }
 
@@ -137,10 +152,10 @@ public class PlatformUtil {
     //$$ private static List<IModInfo> cachedForgeModList;
     //$$ // Forge has 2 mod lists.
     //$$ private static List<IModInfo> getForgeMods() {
-    //$$	 if (cachedForgeModList == null) {
-    //$$		 cachedForgeModList = new ArrayList<>(LoadingModList.get().getMods());
-    //$$	 }
-    //$$	 return cachedForgeModList;
+    //$$ 	 if (cachedForgeModList == null) {
+    //$$ 		 cachedForgeModList = new ArrayList<>(LoadingModList.get().getMods());
+    //$$ 	 }
+    //$$ 	 return cachedForgeModList;
     //$$ }
     //#endif
 
@@ -148,7 +163,7 @@ public class PlatformUtil {
         //#if LOADER == FABRIC
         return FabricLoader.getInstance().getAllMods().stream().map(mod -> getMod(mod.getMetadata().getId()).get()).sorted(Comparator.comparing(Mod::getId)).collect(Collectors.toList());
         //#else
-        //$$ return getForgeMods().stream().map(mod -> getMod(mod.getModId()).get()).sorted(Comparator.comparing((Function<Mod, String>) Mod::getId)).collect(Collectors.toList());
+        //$$ return getForgeMods().stream().map(mod -> getMod(mod.getModId()).get()).sorted(Comparator.comparing(Mod::getId)).collect(Collectors.toList());
         //#endif
     }
 

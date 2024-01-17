@@ -45,3 +45,6 @@ type="required"
 versionRange="$clothConfigDep"
 ordering="NONE"
 side="BOTH"
+
+[modproperties.roughlyenoughconfigscreens]
+configuredBackground="minecraft:textures/block/stone.png"
