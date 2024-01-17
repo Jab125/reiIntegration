@@ -14,6 +14,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 //#if LOADER>=FABRIC
+import com.jab125.clothintegration.util.ModConfig;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.metadata.CustomValue;
@@ -97,6 +98,7 @@ public class PlatformUtil {
     }
 
     public static Optional<Identifier> getConfiguredBackground(Mod mod) {
+        if (!ModConfig.$().configuredBackgrounds) return Optional.empty();
         //#if LOADER == FABRIC
         ModContainer container = mod.backing();
         if (container.getMetadata().containsCustomValue("configured")) {
