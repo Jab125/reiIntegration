@@ -85,7 +85,13 @@ public class PlatformUtil {
     }
 
     public static void assertNeoForge() {
-        Optional<Mod> forge = getMod("forge");
+        Optional<Mod> forge = getMod(
+                //#if MC == 1.20.1
+                "forge"
+                //#else
+                //$$ "neoforge"
+                //#endif
+        );
         if (forge.isPresent()) {
             if ("NeoForge".equals(forge.get().getName())) {
                 return;

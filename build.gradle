@@ -1,4 +1,6 @@
 import com.replaymod.gradle.preprocess.PreprocessTask
+import groovy.json.JsonOutput
+import groovy.json.JsonSlurper
 import net.fabricmc.loom.configuration.providers.mappings.utils.DstNameFilterMappingVisitor
 import net.fabricmc.mappingio.adapter.MappingSourceNsSwitch
 import net.fabricmc.mappingio.format.ProGuardReader
@@ -62,7 +64,7 @@ String nodontdothat() {
 }
 
 if (loader != 1) {
-    project.ext["loom.platform"] = (loader == 0 || loader == -1) ? "forge" : loader == 2 ? "quilt" : nodontdothat()
+    project.ext["loom.platform"] = (loader == 0 || (loader == -1 && mcVersion == 12001)) ? "forge" : loader == -1 ? "neoforge" : loader == 2 ? "quilt" : nodontdothat()
 }
 
 group 'com.jab125.jeicloth'
@@ -220,12 +222,14 @@ archivesBaseName = "roughly-enough-config-screens-" + mcVersionStr + "-" + (load
 
 loom {
     //accessWidenerPath = getRootProject().projectDir.toPath().resolve("src/main/resources/modpack-update-checker.accesswidener").toFile()
-    mixin.defaultRefmapName.set('clothintegration.refmap.json')
+    if (loader != -1 || mcVersion == 12001) {
+        mixin.defaultRefmapName.set('clothintegration.refmap.json')
+    }
     runConfigs.all {
         ideConfigGenerated = true
     }
     accessWidenerPath = getRootProject().projectDir.toPath().resolve("src/main/resources/clothintegration.accesswidener").toFile()
-    if (loader == 0 || loader == -1) {
+    if (loader == 0 || (loader == -1 && mcVersion == 12001)) {
         forge {
             mixinConfig "clothintegration.mixins.json"
         }
@@ -273,11 +277,13 @@ dependencies {
         }
     }
     {
-        def loaderName = loader <= 0 ? "forge" : "fabric"
+        def loaderName = loader == 0 ? "forge" : loader == -1 ? mcVersion == 12001 ? "forge" : "neoforge" : "fabric"
         System.out.println("applying " + loader + " " + loaderName)
-        modImplementation "mezz.jei:jei-${project.name.split('-')[0]}-$loaderName:${project.properties.jeiVersion}", {
-            transitive = false
-        };
+        if (project.properties.jeiVersion) {
+            modImplementation "mezz.jei:jei-${project.name.split('-')[0]}-$loaderName:${project.properties.jeiVersion}", {
+                transitive = false
+            }
+        }
 
 //        modRuntimeOnly "mezz.jei:jei-${project.name.split('-')[0]}-$loaderName:$project.properties.jeiVersion", {
 //            transitive = false
@@ -305,7 +311,7 @@ processResources {
     inputs.property "version", project.version
     inputs.property "mcVersion", project.mcVersion
     inputs.property "minecraftVersion", minecraftVersion
-    inputs.property "jeiDep", project.properties.jeiDep
+    inputs.property "jeiDep", project.properties.jeiDep ?: ""
     if (loader <= 0) {
         inputs.property "forge", project.properties.forgeDep
     }
@@ -316,7 +322,7 @@ processResources {
     filesMatching(["fabric.mod.json", "META-INF/mods.toml", "quilt.mod.json"]) {
         def map = loader == 2 ? ["version": project.version, "minecraftVersion": minecraftVersion, group: project.group.toString()] : ["version": project.version, "minecraftVersion": minecraftVersion]
         if (loader <= 0) map.put("forge", project.properties.forgeDep)
-        map.put("jeiDep", project.properties.jeiDep)
+        map.put("jeiDep", project.properties.jeiDep ?: "")
         map.put("clothConfigDep", project.properties.clothConfigDep)
         System.out.println(map)
         expand map
@@ -326,6 +332,37 @@ processResources {
     if (loader <= 0) {
         filesMatching(["pack.mcmeta"]) {
             expand resourcePackFormat: project.properties.resourcePackFormat, dataPackFormat: project.properties.dataPackFormat
+        }
+    }
+
+    doLast {
+        if (loader == -1 && mcVersion != 12001) {
+            fileTree(dir: outputs.files.asPath, include: "clothintegration.mixins.json").each { File file ->
+                def parse = new JsonSlurper().parse(file)
+                parse.remove("refmap")
+                file.text = JsonOutput.prettyPrint(JsonOutput.toJson(parse))
+            }
+        }
+        if (!project.properties.jeiVersion) {
+            fileTree(dir: outputs.files.asPath, include: "clothintegration.mixins.json").each { File file ->
+                def parse = new JsonSlurper().parse(file)
+                parse["mixins"].remove("EnumSerializerAccessor")
+                parse["mixins"].remove("IntegerSerializerAccessor")
+                file.text = JsonOutput.prettyPrint(JsonOutput.toJson(parse))
+            }
+
+            fileTree(dir: outputs.files.asPath, include: "fabric.mod.json").each { File file ->
+                def parse = new JsonSlurper().parse(file)
+                parse["recommends"].remove("jei")
+                file.text = JsonOutput.prettyPrint(JsonOutput.toJson(parse))
+            }
+        }
+
+        if (loader == -1) {
+            fileTree(dir: outputs.files.asPath, include: "META-INF/mods.toml").each { File file ->
+                file.text += "\n\n[[mixins]]\nconfig = \"clothintegration.mixins.json\""
+                file.text = file.text.replaceAll("modId = \"forge\"", "modId = \"neoforge\"")
+            }
         }
     }
 

@@ -1,3 +1,4 @@
+//#if HAS:JEI
 package com.jab125.clothintegration.mixin;
 
 import mezz.jei.common.config.file.serializers.IntegerSerializer;
@@ -12,3 +13,4 @@ public interface IntegerSerializerAccessor {
     @Accessor
     int getMax();
 }
+//#endif

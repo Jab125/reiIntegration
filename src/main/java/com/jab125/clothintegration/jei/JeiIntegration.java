@@ -1,3 +1,4 @@
+//#if HAS:JEI
 package com.jab125.clothintegration.jei;
 
 import com.jab125.clothintegration.Integration;
@@ -21,3 +22,4 @@ public class JeiIntegration extends Integration {
         return new Identifier("roughlyenoughconfigscreens:jei");
     }
 }
+//#endif

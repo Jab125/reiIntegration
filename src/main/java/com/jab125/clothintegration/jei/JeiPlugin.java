@@ -1,3 +1,4 @@
+//#if HAS:JEI
 package com.jab125.clothintegration.jei;
 
 import mezz.jei.api.IModPlugin;
@@ -18,3 +19,4 @@ public class JeiPlugin implements IModPlugin {
         manager = configManager;
     }
 }
+//#endif

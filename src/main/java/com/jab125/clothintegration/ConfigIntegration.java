@@ -6,7 +6,9 @@ package com.jab125.clothintegration;
 //#if HAS:FRAMEWORK
 import com.jab125.clothintegration.framework.FrameworkIntegration;
 //#endif
+//#if HAS:JEI
 import com.jab125.clothintegration.jei.JeiIntegration;
+//#endif
 import com.jab125.clothintegration.minecraft.MinecraftIntegration;
 import com.jab125.clothintegration.platform.ConfigScreenUtil;
 import com.jab125.clothintegration.platform.PlatformUtil;
@@ -27,7 +29,9 @@ public class ConfigIntegration {
 
     private ConfigIntegration() {
         ModConfig.a90();
+        //#if HAS:JEI
         if (PlatformUtil.isModInstalled("jei") && !PlatformUtil.isModInstalled("rei_plugin_compatibilities")) new JeiIntegration();
+        //#endif
         if (!PlatformUtil.getLoader().isFabricLike()) new MinecraftIntegration();
         //#if LOADER <= FORGE
         //$$ new ForgeIntegration();

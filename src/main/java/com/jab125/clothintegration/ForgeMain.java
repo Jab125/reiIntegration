@@ -2,7 +2,6 @@
 //$$ package com.jab125.clothintegration;
 //$$
 //$$ import com.jab125.clothintegration.forge.test.TestConfig;
-//$$ import com.jab125.clothintegration.jei.JeiCloth;
 //$$ import com.jab125.clothintegration.platform.PlatformUtil;
 //$$ import net.minecraftforge.client.ConfigScreenHandler;
 //$$ import net.minecraftforge.eventbus.api.IEventBus;

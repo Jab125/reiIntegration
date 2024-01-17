@@ -30,7 +30,7 @@ side = "BOTH"
 
 [[dependencies.roughlyenoughconfigscreens]]
 modId="jei"
-mandatory=true
+mandatory = false
 versionRange="$jeiDep"
 ordering="NONE"
 side="BOTH"

@@ -1,3 +1,4 @@
+//#if HAS:JEI
 package com.jab125.clothintegration.mixin;
 
 import mezz.jei.common.config.file.serializers.EnumSerializer;
@@ -9,3 +10,4 @@ public interface EnumSerializerAccessor {
     @Accessor
     Class<?> getEnumClass();
 }
+//#endif

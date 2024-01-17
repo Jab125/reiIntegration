@@ -1,3 +1,4 @@
+//#if HAS:JEI
 package com.jab125.clothintegration.jei;
 
 import com.jab125.clothintegration.mixin.EnumSerializerAccessor;
@@ -134,3 +135,4 @@ public class JeiCloth {
     }
 
 }
+//#endif
