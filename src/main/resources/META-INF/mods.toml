@@ -13,6 +13,7 @@ Automatically creates config screens for mods that use either the Forge config s
 Also supports JEI.
 '''
 logoFile="recs.png"
+displayTest="IGNORE_ALL_VERSION" # doesn't matter if mod is installed on client or on server and vice versa.
 
 [[dependencies.roughlyenoughconfigscreens]]
 modId = "forge"

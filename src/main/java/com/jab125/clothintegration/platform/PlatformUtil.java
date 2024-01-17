@@ -12,9 +12,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import com.jab125.clothintegration.util.ModConfig;
 
 //#if LOADER>=FABRIC
-import com.jab125.clothintegration.util.ModConfig;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.metadata.CustomValue;

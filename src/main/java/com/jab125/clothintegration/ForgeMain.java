@@ -3,8 +3,10 @@
 //$$
 //$$ import com.jab125.clothintegration.forge.test.TestConfig;
 //$$ import com.jab125.clothintegration.platform.PlatformUtil;
+//$$ import net.minecraftforge.api.distmarker.Dist;
 //$$ import net.minecraftforge.client.ConfigScreenHandler;
 //$$ import net.minecraftforge.eventbus.api.IEventBus;
+//$$ import net.minecraftforge.fml.DistExecutor;
 //$$ import net.minecraftforge.fml.ModList;
 //$$ import net.minecraftforge.fml.ModLoadingContext;
 //$$ import net.minecraftforge.fml.common.Mod;
@@ -20,13 +22,15 @@
         //#if LOADER==NEO
         //$$ PlatformUtil.assertNeoForge();
         //#endif
-//$$         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
-//$$         // ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, TestConfig.CLIENT_SPEC);
-//$$         bus.addListener(this::loaded);
+//$$         DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> () -> {
+//$$             IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+//$$             // ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, TestConfig.CLIENT_SPEC);
+//$$             bus.addListener(this::loaded);
+//$$         });
 //$$     }
 //$$
 //$$     private void loaded(FMLLoadCompleteEvent event) {
-//$$         event.enqueueWork(ConfigIntegration::init);
+//$$         DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> () -> event.enqueueWork(ConfigIntegration::init));
 //$$     }
 //$$ }
 //#endif
