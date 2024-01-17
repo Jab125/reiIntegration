@@ -28,6 +28,9 @@
 -keep class com.jab125.clothintegration.platform.ModMenuCompat {
 }
 
+-keep class com.jab125.clothintegration.MixinPlugin {
+}
+
 -keep,allowobfuscation class ** {
     *;
 }
