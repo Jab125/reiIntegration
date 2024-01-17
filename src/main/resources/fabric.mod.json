@@ -40,6 +40,9 @@
       "links": {
         "modmenu.kofi": "https://ko-fi.com/Jab125/"
       }
+    },
+    "configured": {
+      "background": "minecraft:textures/block/stone.png"
     }
   }
 }
