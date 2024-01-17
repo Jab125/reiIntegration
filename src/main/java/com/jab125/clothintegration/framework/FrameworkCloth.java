@@ -5,6 +5,7 @@ import com.jab125.clothintegration.cloth.ButtonBuilder;
 import com.jab125.clothintegration.mixin.AbstractConfigScreenAccessor;
 import com.jab125.clothintegration.platform.Mod;
 import com.jab125.clothintegration.platform.PlatformUtil;
+import com.jab125.clothintegration.util.ModConfig;
 import com.jab125.clothintegration.util.StringUtils;
 import com.mrcrayfish.framework.api.config.*;
 import com.mrcrayfish.framework.config.FrameworkConfigManager;
@@ -26,11 +27,15 @@ public class FrameworkCloth {
 	public <T extends Enum<T>> Screen createScreen(Screen prev, String id, List<FrameworkConfigManager.FrameworkConfigImpl> impls) {
 		Future future = new Future();
 		ConfigBuilder configBuilder1 = ConfigBuilder.create();
+		configBuilder1.setShouldListSmoothScroll(ModConfig.$().smoothScrolling);
+		configBuilder1.setShouldTabsSmoothScroll(ModConfig.$().smoothScrolling);
 		configBuilder1.setParentScreen(prev);
 		configBuilder1.setTitle(Text.of(PlatformUtil.getMod(id).map(Mod::getName).orElse(id)));
 		configBuilder1.setEditable(false);
 		for (FrameworkConfigManager.FrameworkConfigImpl impl : impls) {
 			ConfigBuilder configBuilder = ConfigBuilder.create();
+			configBuilder.setShouldListSmoothScroll(ModConfig.$().smoothScrolling);
+			configBuilder.setShouldTabsSmoothScroll(ModConfig.$().smoothScrolling);
 			configBuilder.setTitle(Text.empty().append(configBuilder1.getTitle()).append(" / ").append(StringUtils.convertToSentence(impl.getName().getPath())));
 			configBuilder.setEditable(!impl.isReadOnly());
 			future.setIfPresent(configBuilder);

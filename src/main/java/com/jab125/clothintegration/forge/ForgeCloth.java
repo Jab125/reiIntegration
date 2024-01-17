@@ -37,6 +37,8 @@
 //$$     private static Screen createConfigScreen(Set<ModConfig> configs, ModContainer container, Screen prev) {
 //$$         Future future = new Future();
 //$$         ConfigBuilder configBuilder = ConfigBuilder.create();
+//$$         configBuilder.setShouldListSmoothScroll(com.jab125.clothintegration.util.ModConfig.$().smoothScrolling);
+//$$         configBuilder.setShouldTabsSmoothScroll(com.jab125.clothintegration.util.ModConfig.$().smoothScrolling);
 //$$         configBuilder.setParentScreen(prev);
 //$$         configBuilder.setTitle(Text.of(container.getModInfo().getDisplayName()));
 //$$         configBuilder.setEditable(false);
@@ -81,6 +83,8 @@
 //$$     private static Screen createConfigFor(ConfigBuilder prevConfigBuilder, ModConfig config, String path, Future prevFuture) {
 //$$         Future future = new Future();
 //$$         ConfigBuilder configBuilder = ConfigBuilder.create();
+//$$         configBuilder.setShouldListSmoothScroll(com.jab125.clothintegration.util.ModConfig.$().smoothScrolling);
+//$$         configBuilder.setShouldTabsSmoothScroll(com.jab125.clothintegration.util.ModConfig.$().smoothScrolling);
 //$$         prevFuture.setIfPresent(configBuilder);
 //$$         ConfigEntryBuilder entryBuilder = configBuilder.entryBuilder();
 //$$         configBuilder.setTitle(Text.of(path));

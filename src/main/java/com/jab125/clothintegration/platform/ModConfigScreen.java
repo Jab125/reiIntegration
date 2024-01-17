@@ -28,6 +28,8 @@ public class ModConfigScreen {
 				})
 				.setSaveConsumer(list -> config.integrations = list).build();
 		client.addEntry(entry);
+		client.addEntry(configBuilder.entryBuilder().startBooleanToggle(Text.literal("Configured Backgroounds"), config.configuredBackgrounds).setDefaultValue(defaultConfig.configuredBackgrounds).setSaveConsumer(a -> config.configuredBackgrounds = a).build());
+		client.addEntry(configBuilder.entryBuilder().startBooleanToggle(Text.literal("Smooth Scrolling"), config.smoothScrolling).setDefaultValue(defaultConfig.smoothScrolling).setSaveConsumer(a -> config.smoothScrolling = a).build());
 		configBuilder.setSavingRunnable(ModConfig.MOD_CONFIG::save);
 		configBuilder.setParentScreen(prev);
 		return configBuilder.build();

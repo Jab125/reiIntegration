@@ -3,6 +3,7 @@ package com.jab125.clothintegration.jei;
 
 import com.jab125.clothintegration.mixin.EnumSerializerAccessor;
 import com.jab125.clothintegration.mixin.IntegerSerializerAccessor;
+import com.jab125.clothintegration.util.ModConfig;
 import com.jab125.clothintegration.util.StringUtils;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
@@ -39,6 +40,8 @@ public class JeiCloth {
      //   MinecraftLocaleSupplier
         ConfigBuilder configBuilder = ConfigBuilder.create();
         ConfigEntryBuilder entryBuilder = configBuilder.entryBuilder();
+        configBuilder.setShouldListSmoothScroll(ModConfig.$().smoothScrolling);
+        configBuilder.setShouldTabsSmoothScroll(ModConfig.$().smoothScrolling);
         configBuilder.setParentScreen(prev);
         configBuilder.setTitle(Text.literal("Just Enough Items"));
         for (IJeiConfigFile configFile : JeiPlugin.manager.getConfigFiles().stream().sorted(Comparator.comparing(a -> a.getPath().getFileName().toString())).toList()) {

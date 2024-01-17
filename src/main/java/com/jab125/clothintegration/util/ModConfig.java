@@ -14,6 +14,8 @@ import java.util.List;
 
 @Config(name = "recs")
 public class ModConfig implements ConfigData {
+
+	// required restart
 	public List<String> integrations = new ArrayList<>(List.of(
 			"roughlyenoughconfigscreens:jei",
 			//#if LOADER <= FORGE
@@ -23,7 +25,15 @@ public class ModConfig implements ConfigData {
 			"roughlyenoughconfigscreens:framework"
 	));
 
+	public boolean configuredBackgrounds = true;
+	public boolean transparentBackgrounds = false;
+	public boolean smoothScrolling = true;
+
 	public static final ConfigHolder<ModConfig> MOD_CONFIG = AutoConfig.register(ModConfig.class, GsonConfigSerializer::new);
+
+	public static ModConfig $() {
+		return MOD_CONFIG.get();
+	}
 
 	static {
 		ConfigScreenUtil.addConfigScreenToMod("roughlyenoughconfigscreens", ModConfigScreen::getConfigScreen);
