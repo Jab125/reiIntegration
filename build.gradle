@@ -80,7 +80,13 @@ apply plugin: "com.modrinth.minotaur"
 
 architectury {
     platformSetupLoomIde()
-    if (loader == 0 || loader == -1) {
+    if (loader == -1) {
+        if (mcVersion == 12001) {
+            forge()
+        } else {
+            neoForge()
+        }
+    } else if (loader == 0) {
         forge()
     } else if (loader == 1) {
         fabric()
@@ -168,12 +174,28 @@ remoteSign {
 System.out.println(project.name)
 apply plugin: 'com.jab125.preprocessor.preprocess'
 
+static def _int(ing) {
+    if (ing) return 1;
+    return 0;
+}
 preprocess {
     vars.put("MC", project.mcVersion)
     vars.put("LOADER", loader) // 0 forge, 1 fabric, 2 quilt
     // functionality defined in kotlin
     parsers.put("LOADER", mlp)
-    parsers.put("MC", mcp)
+    parsers.put("MC", mcp);
+
+    {
+        def map = [
+                "HAS:JEI": _int(!!project.properties.jeiVersion),
+                "HAS:FRAMEWORK": _int(!!project.properties.frameworkVersion)
+        ]
+        for (final Map.Entry<String, Integer> f in map) {
+            vars.put(f.key, f.value)
+        }
+    }
+
+
     keywords.set([
             ".java": PreprocessTask.DEFAULT_KEYWORDS,
             ".kt": PreprocessTask.DEFAULT_KEYWORDS,
@@ -215,10 +237,9 @@ dependencies {
     minecraft 'com.mojang:minecraft:' + project.properties.minecraft
     mappings 'net.fabricmc:yarn:' + project.properties.yarn
     if (loader == 1) {
-        modImplementation 'net.fabricmc:fabric-loader:0.14.21'
+        modImplementation 'net.fabricmc:fabric-loader:0.14.22'
         def fabricApiVersion = project.properties.fabricApi
         modImplementation "net.fabricmc.fabric-api:fabric-api:$fabricApiVersion"
-        modImplementation "com.mrcrayfish:framework-fabric:${project.properties.minecraft}-0.6.15"
     } else if (loader == 2) {
 //        modImplementation 'org.quiltmc:quilt-loader:0.19.0-beta.11'
 //        def quiltedFabricApiVersion = [
@@ -226,7 +247,11 @@ dependencies {
 //        ][mcVersion]
 //        modImplementation "org.quiltmc.quilted-fabric-api:quilted-fabric-api:$quiltedFabricApiVersion"
     } else {
-        modImplementation "com.mrcrayfish:framework-forge:${project.properties.minecraft}-0.6.15"
+    }
+    def frameworkLoader = loader == 0 ? "forge" : loader == 1 ? "fabric" : loader == -1 ? "forge" : null
+    def frameworkVersion = project.properties.frameworkVersion
+    if (frameworkVersion) {
+        modImplementation "com.mrcrayfish:framework-$frameworkLoader:$frameworkVersion"
     }
 
     if (loader >= 1) { // fabric or quilt
@@ -238,7 +263,11 @@ dependencies {
         if (loader == 0) {
             forge "net.minecraftforge:forge:$forge"
         } else if (loader == -1) {
-            forge "net.neoforged:forge:$forge"
+            if (mcVersion == 12001) {
+                forge "net.neoforged:forge:$forge"
+            } else {
+                neoForge "net.neoforged:neoforge:$neoforge"
+            }
         } else {
             nodontdothat()
         }

@@ -15,12 +15,16 @@ plugins {
 
 
 preprocess {
+    val mc12002forge = createNode("1.20.2-forge", 12002, "yarn")
+    val mc12002fabric = createNode("1.20.2-fabric", 12002, "yarn")
     val mc12001neo = createNode("1.20.1-neo", 12001, "yarn")
     val mc12001forge = createNode("1.20.1-forge", 12001, "yarn")
     val mc12001 = createNode("1.20.1-fabric", 12001, "yarn")
     val mc11904forge = createNode("1.19.4-forge", 11904, "yarn")
     val mc11904 = createNode("1.19.4-fabric", 11904, "yarn")
 
+    mc12002forge.link(mc12002fabric)
+    mc12002fabric.link(mc12001)
     mc12001neo.link(mc12001forge)
     mc12001forge.link(mc12001, file("versions/mapping-fabric-forge-1.20.1.txt"))
     mc12001.link(mc11904)

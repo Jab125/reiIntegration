@@ -1,3 +1,4 @@
+//#if HAS:FRAMEWORK
 package com.jab125.clothintegration.framework;
 
 import com.jab125.clothintegration.Integration;
@@ -34,3 +35,4 @@ public class FrameworkIntegration extends Integration {
 		return new Identifier("roughlyenoughconfigscreens:framework");
 	}
 }
+//#endif

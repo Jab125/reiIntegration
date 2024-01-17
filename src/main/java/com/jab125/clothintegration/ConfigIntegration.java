@@ -3,7 +3,9 @@ package com.jab125.clothintegration;
 //#if LOADER <= FORGE
 //$$ import com.jab125.clothintegration.forge.ForgeIntegration;
 //#endif
+//#if HAS:FRAMEWORK
 import com.jab125.clothintegration.framework.FrameworkIntegration;
+//#endif
 import com.jab125.clothintegration.jei.JeiIntegration;
 import com.jab125.clothintegration.minecraft.MinecraftIntegration;
 import com.jab125.clothintegration.platform.ConfigScreenUtil;
@@ -30,6 +32,8 @@ public class ConfigIntegration {
         //#if LOADER <= FORGE
         //$$ new ForgeIntegration();
         //#endif
+        //#if HAS:FRAMEWORK
         if (PlatformUtil.isModInstalled("framework")) new FrameworkIntegration();
+        //#endif
     }
 }

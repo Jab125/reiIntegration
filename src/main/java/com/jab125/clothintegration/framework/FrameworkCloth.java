@@ -1,3 +1,4 @@
+//#if HAS:FRAMEWORK
 package com.jab125.clothintegration.framework;
 
 import com.jab125.clothintegration.cloth.ButtonBuilder;
@@ -119,3 +120,4 @@ public class FrameworkCloth {
         }
     }
 }
+//#endif
