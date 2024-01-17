@@ -12,7 +12,7 @@
   },
   "license": "All Rights Reserved",
   "icon": "recs.png",
-  "environment": "*",
+  "environment": "client",
   "entrypoints": {
     "client": [
       "com.jab125.clothintegration.FabricMain"
