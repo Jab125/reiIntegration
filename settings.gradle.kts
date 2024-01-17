@@ -37,7 +37,7 @@ rootProject.buildFileName = "root.gradle.kts"
 val modVersions = listOf(
         //   "1.19",
         //    "1.19.1",
-        "1.19.4-fabric", "1.19.4-forge", "1.20.1-fabric", "1.20.1-forge", "1.20.1-neo", "1.20.2-fabric"
+        "1.19.4-fabric", "1.19.4-forge", "1.20.1-fabric", "1.20.1-forge", "1.20.1-neo", "1.20.2-fabric", "1.20.2-forge"
 )
 
 
