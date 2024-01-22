@@ -31,10 +31,14 @@
 -keep class com.jab125.clothintegration.MixinPlugin {
 }
 
--keep,allowobfuscation class ** {
+-keep class com.jab125.clothintegration.util.ModConfig {
     *;
 }
 
+
+-keep,allowobfuscation class ** {
+    *;
+}
 -keepclassmembers,allowoptimization enum * {
     public static **[] values();
     public static ** valueOf(java.lang.String);
