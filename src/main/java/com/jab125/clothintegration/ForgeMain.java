@@ -22,7 +22,7 @@
         //#if LOADER==NEO
         //$$ PlatformUtil.assertNeoForge();
         //#endif
-//$$         DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> () -> {
+//$$         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
 //$$             IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 //$$             // ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, TestConfig.CLIENT_SPEC);
 //$$             bus.addListener(this::loaded);
@@ -30,7 +30,7 @@
 //$$     }
 //$$
 //$$     private void loaded(FMLLoadCompleteEvent event) {
-//$$         DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> () -> event.enqueueWork(ConfigIntegration::init));
+//$$         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> event.enqueueWork(ConfigIntegration::init));
 //$$     }
 //$$ }
 //#endif
