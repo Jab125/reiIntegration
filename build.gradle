@@ -253,7 +253,8 @@ dependencies {
 //        modImplementation "org.quiltmc.quilted-fabric-api:quilted-fabric-api:$quiltedFabricApiVersion"
     } else {
     }
-    def frameworkLoader = loader == 0 ? "forge" : loader == 1 ? "fabric" : loader == -1 ? "forge" : null
+    def legacyLoader = loader == -1 && mcVersion == 12001 ? 0 : loader
+    def frameworkLoader = legacyLoader == 0 ? "forge" : legacyLoader == 1 ? "fabric" : legacyLoader == -1 ? "neoforge" : null
     def frameworkVersion = project.properties.frameworkVersion
     if (frameworkVersion) {
         modImplementation "com.mrcrayfish:framework-$frameworkLoader:$frameworkVersion"
