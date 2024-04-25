@@ -7,7 +7,7 @@ import java.util.Arrays;
 
 public abstract class Integration {
     public Integration() {
-        if (ModConfig.MOD_CONFIG.get().integrations.stream().anyMatch(a -> this.getId().toString().equals(a))) {
+        if (ModConfig.MOD_CONFIG.get().blacklistedIntegrations.stream().noneMatch(a -> this.getId().toString().equals(a))) {
             System.out.println("[ClothIntegration] Setup " + this.getId() + " compatibility");
             init();
         }

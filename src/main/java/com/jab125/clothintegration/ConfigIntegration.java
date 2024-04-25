@@ -21,7 +21,7 @@ public class ConfigIntegration {
     public static ConfigIntegration INSTANCE;
     public static void init() {
         if (INSTANCE != null) {
-            System.out.println("[ConfigIntegration] Already Initialized!");
+            //System.out.println("[ConfigIntegration] Already Initialized!");
             return;
         }
         INSTANCE = new ConfigIntegration();

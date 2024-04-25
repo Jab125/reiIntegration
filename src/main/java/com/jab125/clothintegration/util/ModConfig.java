@@ -16,14 +16,7 @@ import java.util.List;
 public class ModConfig implements ConfigData {
 
 	// required restart
-	public List<String> integrations = new ArrayList<>(List.of(
-			"roughlyenoughconfigscreens:jei",
-			//#if LOADER <= FORGE
-			//$$ "roughlyenoughconfigscreens:forge",
-			//$$ "roughlyenoughconfigscreens:minecraft",
-			//#endif
-			"roughlyenoughconfigscreens:framework"
-	));
+	public List<String> blacklistedIntegrations = new ArrayList<>(List.of());
 
 	public boolean configuredBackgrounds = true;
 	public boolean transparentBackgrounds = false;
