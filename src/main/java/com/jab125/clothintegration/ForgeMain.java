@@ -4,7 +4,6 @@
 //$$ import com.jab125.clothintegration.forge.test.TestConfig;
 //$$ import com.jab125.clothintegration.platform.PlatformUtil;
 //$$ import net.minecraftforge.api.distmarker.Dist;
-//$$ import net.minecraftforge.client.ConfigScreenHandler;
 //$$ import net.minecraftforge.eventbus.api.IEventBus;
 //$$ import net.minecraftforge.fml.DistExecutor;
 //$$ import net.minecraftforge.fml.ModList;

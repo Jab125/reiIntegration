@@ -5,7 +5,11 @@
 //$$ import com.jab125.clothintegration.platform.ConfigScreenUtil;
 //$$ import com.jab125.clothintegration.platform.Mod;
 //$$ import net.minecraft.util.Identifier;
+//#if LOADER == NEO && MC >= 1.20.5
+//$$ import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
+//#else
 //$$ import net.minecraftforge.client.ConfigScreenHandler;
+//#endif
 //$$ import net.minecraftforge.fml.ModContainer;
 //$$ import net.minecraftforge.fml.ModList;
 //$$ import net.minecraftforge.fml.config.ConfigTracker;
@@ -22,7 +26,11 @@
 //$$         ForgeCloth forgeCloth = new ForgeCloth();
 //$$         ModList.get().forEachModContainer((s, container) -> {
 //$$             if (getConfigs(container).isEmpty()) return;
-//$$             if(container.getCustomExtension(ConfigScreenHandler.ConfigScreenFactory.class).isPresent()) return;
+                 //#if MC < 1.20.5 || LOADER == FORGE
+                 //$$ if(container.getCustomExtension(ConfigScreenHandler.ConfigScreenFactory.class).isPresent()) return;
+                 //#else
+                 //$$ if(container.getCustomExtension(IConfigScreenFactory.class).isPresent()) return;
+                 //#endif
 //$$             ConfigScreenUtil.addConfigScreenToMod(s, prev -> forgeCloth.createScreen(prev, s));
 //$$         });
 //$$     }

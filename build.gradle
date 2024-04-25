@@ -1,10 +1,7 @@
 import com.replaymod.gradle.preprocess.PreprocessTask
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
-import net.fabricmc.loom.configuration.providers.mappings.utils.DstNameFilterMappingVisitor
-import net.fabricmc.mappingio.adapter.MappingSourceNsSwitch
-import net.fabricmc.mappingio.format.ProGuardReader
-import net.fabricmc.mappingio.format.Tiny2Writer
+import java.nio.file.StandardCopyOption
 
 buildscript {
     def mcVersion
@@ -373,10 +370,9 @@ processResources {
             }
 
         }
-        doLast {
-            fileTree(dir: outputs.files.asPath, include: "META-INF/mods.toml").each { File file ->
-                Files.copy(file.toPath(), java.nio.file.Path.of(outputs.files.asPath).resolve("META-INF/neoforge.mods.toml"), StandardCopyOption.REPLACE_EXISTING)
-            }
+
+        fileTree(dir: outputs.files.asPath, include: "META-INF/mods.toml").each { File file ->
+            Files.copy(file.toPath(), java.nio.file.Path.of(outputs.files.asPath).resolve("META-INF/neoforge.mods.toml"), StandardCopyOption.REPLACE_EXISTING)
         }
     }
 
