@@ -47,6 +47,7 @@ buildscript {
         classpath 'gradle.plugin.com.github.jengelman.gradle.plugins:shadow:7.0.0'
         classpath 'dev.architectury.loom:dev.architectury.loom.gradle.plugin:1.1-SNAPSHOT'
         classpath "me.modmuss50:remotesign:0.4.0"
+        classpath 'com.guardsquare:proguard-gradle:7.4.2'
     }
 }
 
@@ -71,7 +72,6 @@ def computeVersion() {
 version = computeVersion()
 
 apply plugin: 'dev.architectury.loom'
-apply plugin: 'loom-obfuscator'
 apply plugin: 'architectury-plugin'
 
 apply plugin: "com.matthewprenger.cursegradle"
@@ -419,7 +419,6 @@ tasks.remapJar {
     }
 }
 import proguard.gradle.ProGuardTask
-import com.jab125.lobf.task.ObfuscateJarTask
 
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files

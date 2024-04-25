@@ -10,7 +10,6 @@ plugins {
     id("org.spongepowered.mixin") version "0.7-SNAPSHOT" apply false
     id("com.matthewprenger.cursegradle") version "1.4.0" apply false
     id("com.modrinth.minotaur") version "2.+" apply false
-    id("loom-obfuscator") version "1.0-SNAPSHOT" apply false
 }
 
 
