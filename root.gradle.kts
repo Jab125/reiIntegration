@@ -2,7 +2,7 @@ import java.util.*
 
 plugins {
     kotlin("jvm") version "1.5.21" apply false
-    id("dev.architectury.loom") version "1.4-SNAPSHOT" apply false
+    id("dev.architectury.loom") version "1.6-SNAPSHOT" apply false
     id("com.jab125.preprocessor.preprocess") version "0.2.1"
     id("com.github.hierynomus.license") version "0.15.0"
     id ("architectury-plugin") version "3.4-SNAPSHOT" apply false
@@ -15,6 +15,8 @@ plugins {
 
 
 preprocess {
+    val mc12005neo = createNode("1.20.5-neo", 12005, "yarn")
+    val mc12005fabric = createNode("1.20.5-fabric", 12005, "yarn")
     val mc12004neo = createNode("1.20.4-neo", 12004, "yarn")
     val mc12004fabric = createNode("1.20.4-fabric", 12004, "yarn")
     val mc12002neo = createNode("1.20.2-neo", 12002, "yarn")
@@ -26,6 +28,8 @@ preprocess {
     val mc11904forge = createNode("1.19.4-forge", 11904, "yarn")
     val mc11904 = createNode("1.19.4-fabric", 11904, "yarn")
 
+    mc12005neo.link(mc12005fabric)
+    mc12005fabric.link(mc12004fabric)
     mc12004neo.link(mc12004fabric)
     mc12004fabric.link(mc12002neo)
     mc12002neo.link(mc12002forge, file("versions/mapping-forge-neoforge-1.20.2.txt"))

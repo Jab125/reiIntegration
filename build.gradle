@@ -213,10 +213,10 @@ preprocess {
 }
 
 def mcVersionStr = "${(int)(mcVersion/10000)}.${(int)(mcVersion/100)%100}" + (mcVersion%100==0 ? '' : ".${mcVersion%100}")
-sourceCompatibility = targetCompatibility = mcVersion >= 11800 ? 17 : mcVersion >= 11700 ? 16 : 1.8
+sourceCompatibility = targetCompatibility = mcVersion >= 12005 ? 21 : mcVersion >= 11800 ? 17 : mcVersion >= 11700 ? 16 : 1.8
 tasks.withType(JavaCompile).configureEach {
     if (mcVersion >= 11700)
-        options.release = mcVersion >= 11800 ? 17 : mcVersion >= 11700 ? 16 : 8
+        options.release = mcVersion >= 12005 ? 21 : mcVersion >= 11800 ? 17 : mcVersion >= 11700 ? 16 : 8
 }
 archivesBaseName = "roughly-enough-config-screens-" + mcVersionStr + "-" + (loader == -1 ? "neo" : loader == 0 ? "forge" : loader == 1 ? "fabric" : loader == 2 ? "quilt" : nodontdothat())
 
@@ -241,7 +241,7 @@ dependencies {
     minecraft 'com.mojang:minecraft:' + project.properties.minecraft
     mappings 'net.fabricmc:yarn:' + project.properties.yarn
     if (loader == 1) {
-        def loaderVersion = mcVersion >= 12004 ? "0.15.3" : "0.14.22"
+        def loaderVersion = mcVersion >= 12005 ? "0.15.10" : mcVersion >= 12004 ? "0.15.3" : "0.14.22"
         modImplementation "net.fabricmc:fabric-loader:$loaderVersion"
         def fabricApiVersion = project.properties.fabricApi
         modImplementation "net.fabricmc.fabric-api:fabric-api:$fabricApiVersion"
@@ -365,6 +365,12 @@ processResources {
                 file.text += "\n\n[[mixins]]\nconfig = \"clothintegration.mixins.json\""
                 file.text = file.text.replaceAll("modId = \"forge\"", "modId = \"neoforge\"")
             }
+
+        }
+        doLast {
+            fileTree(dir: outputs.files.asPath, include: "META-INF/mods.toml").each { File file ->
+                Files.copy(file.toPath(), java.nio.file.Path.of(outputs.files.asPath).resolve("META-INF/neoforge.mods.toml"), StandardCopyOption.REPLACE_EXISTING)
+            }
         }
     }
 
@@ -430,23 +436,11 @@ def randomString(min, max) {
     def rnd = new java.security.SecureRandom()
     return (0..rnd.nextInt(min, max)).toList().collect { AB.charAt(rnd.nextInt(AB.length())) }.join("")
 }
-def gg = task("tothejaljkljlkjl", {
-    BufferedWriter writer = Files.newBufferedWriter(project.file("obfuscation-mappings.tiny").toPath(), StandardCharsets.UTF_8);
-    Tiny2Writer mappingVisitor = new Tiny2Writer(writer, false);
-    // Filter out field names matching the pattern
-    DstNameFilterMappingVisitor nameFilter = null;//new DstNameFilterMappingVisitor(mappingVisitor, SYNTHETIC_NAME_PATTERN);
 
-    // Make official the source namespace
-    MappingSourceNsSwitch nsSwitch = new MappingSourceNsSwitch(/*nameSyntheticMembers()*/true ? mappingVisitor : nameFilter, "obfuscated");
-    try (BufferedReader a = Files.newBufferedReader(project.file("out.map").toPath(), StandardCharsets.UTF_8)) {
-        ProGuardReader.read(a, "yarn", "obfuscated", nsSwitch);
-    }
-})
 project.file(".gradle/proguard-dictionary.txt").delete()
 project.file(".gradle/proguard-dictionary.txt").write((0..1000).toList().collect { randomString(5, 60) }.join("\n"))
 
 obfuscateJar.dependsOn(bundleJar)
-obfuscateJar.finalizedBy(gg)
 
 
 remapJar {
@@ -485,7 +479,7 @@ curseforge {
         //  addGameVersion "Client"
         addGameVersion loader == 0 ? "Forge" : loader == 1 ? "Fabric" : loader == 2 ? "Quilt" : loader == -1 ? "NeoForge" : nodontdothat()
         addGameVersion project.name.split("-")[0]
-        addGameVersion "Java " + (mcVersion >= 11800 ? 17 : mcVersion >= 11700 ? 16 : 8)
+        addGameVersion "Java " + (mcVersion >= 12005 ? 21 : mcVersion >= 11800 ? 17 : mcVersion >= 11700 ? 16 : 8)
         mainArtifact(signRemapJar.output) {
             displayName = "[${loader == 0 ? "Forge" : loader == 1 ? "Fabric" : loader == 2 ? "Quilt" : loader == -1 ? "NeoForge" : nodontdothat()} ${project.name.split('-')[0]}] ${version}"
             if (loader >= 1) {
