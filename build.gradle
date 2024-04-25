@@ -239,6 +239,12 @@ loom {
 dependencies {
 
     minecraft 'com.mojang:minecraft:' + project.properties.minecraft
+    if (!!project.properties.yarnPatches) {
+        mappings loom.layered {
+            it.mappings('net.fabricmc:yarn:' + project.properties.yarn)
+            it.mappings('dev.architectury:yarn-mappings-patch-neoforge:' + project.properties.yarnPatches)
+        }
+    }
     mappings 'net.fabricmc:yarn:' + project.properties.yarn
     if (loader == 1) {
         def loaderVersion = mcVersion >= 12005 ? "0.15.10" : mcVersion >= 12004 ? "0.15.3" : "0.14.22"
