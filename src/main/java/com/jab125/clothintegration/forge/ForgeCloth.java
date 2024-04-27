@@ -38,7 +38,7 @@
 //$$     private static Screen createConfigScreen(Set<ModConfig> configs, ModContainer container, Screen prev) {
 //$$         Future future = new Future();
 //$$         ConfigBuilder configBuilder = ConfigBuilder.create();
-//$$         PlatformUtil.getMod(container.getModId()).flatMap(PlatformUtil::getConfiguredBackground).ifPresent(configBuilder::setDefaultBackgroundTexture);
+//$$         PlatformUtil.getMod(container.getModId()).flatMap(PlatformUtil::getConfiguredBackground).ifPresent(a -> PlatformUtil.setBackgroundTexture(configBuilder, a));
 //$$         configBuilder.setShouldListSmoothScroll(com.jab125.clothintegration.util.ModConfig.$().smoothScrolling);
 //$$         configBuilder.setShouldTabsSmoothScroll(com.jab125.clothintegration.util.ModConfig.$().smoothScrolling);
 //$$         configBuilder.setParentScreen(prev);
@@ -85,7 +85,7 @@
 //$$     private static Screen createConfigFor(ConfigBuilder prevConfigBuilder, ModConfig config, String path, Future prevFuture) {
 //$$         Future future = new Future();
 //$$         ConfigBuilder configBuilder = ConfigBuilder.create();
-//$$         PlatformUtil.getMod(config.getModId()).flatMap(PlatformUtil::getConfiguredBackground).ifPresent(configBuilder::setDefaultBackgroundTexture);
+//$$         PlatformUtil.getMod(config.getModId()).flatMap(PlatformUtil::getConfiguredBackground).ifPresent(a -> PlatformUtil.setBackgroundTexture(configBuilder, a));
 //$$         configBuilder.setShouldListSmoothScroll(com.jab125.clothintegration.util.ModConfig.$().smoothScrolling);
 //$$         configBuilder.setShouldTabsSmoothScroll(com.jab125.clothintegration.util.ModConfig.$().smoothScrolling);
 //$$         prevFuture.setIfPresent(configBuilder);

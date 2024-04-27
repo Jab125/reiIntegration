@@ -41,7 +41,7 @@ public class JeiCloth {
      //   MinecraftLocaleSupplier
         ConfigBuilder configBuilder = ConfigBuilder.create();
         ConfigEntryBuilder entryBuilder = configBuilder.entryBuilder();
-        PlatformUtil.getMod("jei").flatMap(PlatformUtil::getConfiguredBackground).ifPresent(configBuilder::setDefaultBackgroundTexture);
+        PlatformUtil.getMod("jei").flatMap(PlatformUtil::getConfiguredBackground).ifPresent(a -> PlatformUtil.setBackgroundTexture(configBuilder, a));
         configBuilder.setShouldListSmoothScroll(ModConfig.$().smoothScrolling);
         configBuilder.setShouldTabsSmoothScroll(ModConfig.$().smoothScrolling);
         configBuilder.setParentScreen(prev);

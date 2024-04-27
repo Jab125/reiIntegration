@@ -15,7 +15,7 @@ public class ModConfigScreen {
 		ModConfig config = ModConfig.MOD_CONFIG.get();
 		ModConfig defaultConfig = new ModConfig();
 		ConfigBuilder configBuilder = ConfigBuilder.create();
-		PlatformUtil.getMod("roughlyenoughconfigscreens").flatMap(PlatformUtil::getConfiguredBackground).ifPresent(configBuilder::setDefaultBackgroundTexture);
+		PlatformUtil.getMod("roughlyenoughconfigscreens").flatMap(PlatformUtil::getConfiguredBackground).ifPresent(a -> PlatformUtil.setBackgroundTexture(configBuilder, a));
 		ConfigCategory client = configBuilder.getOrCreateCategory(Text.literal("Client"));
 		StringListListEntry entry = configBuilder.entryBuilder().startStrList(Text.literal("Blacklisted Integrations"), config.blacklistedIntegrations)
 				.setDefaultValue(defaultConfig.blacklistedIntegrations)

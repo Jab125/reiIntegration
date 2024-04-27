@@ -27,7 +27,7 @@ public class FrameworkCloth {
 	public <T extends Enum<T>> Screen createScreen(Screen prev, String id, List<FrameworkConfigManager.FrameworkConfigImpl> impls) {
 		Future future = new Future();
 		ConfigBuilder configBuilder1 = ConfigBuilder.create();
-		PlatformUtil.getMod(id).flatMap(PlatformUtil::getConfiguredBackground).ifPresent(configBuilder1::setDefaultBackgroundTexture);
+		PlatformUtil.getMod(id).flatMap(PlatformUtil::getConfiguredBackground).ifPresent(a -> PlatformUtil.setBackgroundTexture(configBuilder1, a));
 		configBuilder1.setShouldListSmoothScroll(ModConfig.$().smoothScrolling);
 		configBuilder1.setShouldTabsSmoothScroll(ModConfig.$().smoothScrolling);
 		configBuilder1.setParentScreen(prev);
@@ -35,7 +35,7 @@ public class FrameworkCloth {
 		configBuilder1.setEditable(false);
 		for (FrameworkConfigManager.FrameworkConfigImpl impl : impls) {
 			ConfigBuilder configBuilder = ConfigBuilder.create();
-			PlatformUtil.getMod(id).flatMap(PlatformUtil::getConfiguredBackground).ifPresent(configBuilder::setDefaultBackgroundTexture);
+			PlatformUtil.getMod(id).flatMap(PlatformUtil::getConfiguredBackground).ifPresent(a -> PlatformUtil.setBackgroundTexture(configBuilder, a));
 			configBuilder.setShouldListSmoothScroll(ModConfig.$().smoothScrolling);
 			configBuilder.setShouldTabsSmoothScroll(ModConfig.$().smoothScrolling);
 			configBuilder.setTitle(Text.empty().append(configBuilder1.getTitle()).append(" / ").append(StringUtils.convertToSentence(impl.getName().getPath())));

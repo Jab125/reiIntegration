@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 import com.jab125.clothintegration.util.ModConfig;
 
 //#if LOADER>=FABRIC
+import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.metadata.CustomValue;
@@ -166,6 +167,13 @@ public class PlatformUtil {
         return FabricLoader.getInstance().getAllMods().stream().map(mod -> getMod(mod.getMetadata().getId()).get()).sorted(Comparator.comparing(Mod::getId)).collect(Collectors.toList());
         //#else
         //$$ return getForgeMods().stream().map(mod -> getMod(mod.getModId()).get()).sorted(Comparator.comparing(Mod::getId)).collect(Collectors.toList());
+        //#endif
+    }
+
+    public static void setBackgroundTexture(ConfigBuilder configBuilder, Identifier identifier) {
+        configBuilder.setDefaultBackgroundTexture(identifier);
+        //#if MC >= 1.20.5
+        configBuilder.setTransparentBackground(false);
         //#endif
     }
 
