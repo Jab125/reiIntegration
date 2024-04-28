@@ -15,11 +15,11 @@ import java.util.stream.Collectors;
 import com.jab125.clothintegration.util.ModConfig;
 
 //#if LOADER>=FABRIC
-import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.metadata.CustomValue;
 //#endif
+import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import net.minecraft.util.Identifier;
 
 public class PlatformUtil {
