@@ -30,7 +30,7 @@ public class ModConfigScreen {
 				.setSaveConsumer(list -> config.blacklistedIntegrations = list).build();
 		client.addEntry(entry);
 		client.addEntry(configBuilder.entryBuilder().startBooleanToggle(Text.literal("Configured Backgrounds"), config.configuredBackgrounds).setDefaultValue(defaultConfig.configuredBackgrounds).setSaveConsumer(a -> config.configuredBackgrounds = a).build());
-		client.addEntry(configBuilder.entryBuilder().startBooleanToggle(Text.literal("Smooth Scrolling"), config.smoothScrolling).setDefaultValue(defaultConfig.smoothScrolling).setSaveConsumer(a -> config.smoothScrolling = a).build());
+		client.addEntry(configBuilder.entryBuilder().startBooleanToggle(Text.literal("Smooth Scrolling"), config.smoothScrolling).setDefaultValue(defaultConfig.smoothScrolling).setTooltip(Text.literal("Turn this off if you get janky scrolling when using a trackpad.")).setSaveConsumer(a -> config.smoothScrolling = a).build());
 		client.addEntry(configBuilder.entryBuilder().startTextDescription(Text.literal("Integrations has been replaces by Blacklisted Integrations.\nYou may have to manually re-add blacklisted integrations.")).build());
 		configBuilder.setSavingRunnable(ModConfig.MOD_CONFIG::save);
 		configBuilder.setParentScreen(prev);
