@@ -245,7 +245,7 @@ dependencies {
         mappings 'net.fabricmc:yarn:' + project.properties.yarn
     }
     if (loader == 1) {
-        def loaderVersion = mcVersion >= 12005 ? "0.15.10" : mcVersion >= 12004 ? "0.15.3" : "0.14.22"
+        def loaderVersion = mcVersion >= 12005 ? "0.15.11" : mcVersion >= 12004 ? "0.15.3" : "0.14.22"
         modImplementation "net.fabricmc:fabric-loader:$loaderVersion"
         def fabricApiVersion = project.properties.fabricApi
         modImplementation "net.fabricmc.fabric-api:fabric-api:$fabricApiVersion"
