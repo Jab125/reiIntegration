@@ -1,7 +1,7 @@
 modLoader = "javafml"
 loaderVersion = "*"
 #issueTrackerURL = ""
-license = "All Rights Reserved"
+license = "LGPL-2.1-only"
 
 [[mods]]
 modId = "roughlyenoughconfigscreens"

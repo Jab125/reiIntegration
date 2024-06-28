@@ -10,7 +10,7 @@
   ],
   "contact": {
   },
-  "license": "All Rights Reserved",
+  "license": "LGPL-2.1-only",
   "icon": "recs.png",
   "environment": "client",
   "entrypoints": {
