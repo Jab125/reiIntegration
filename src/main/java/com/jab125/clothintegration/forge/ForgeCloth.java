@@ -62,6 +62,9 @@
 //$$             case CLIENT -> "Client";
 //$$             case COMMON -> "Common";
 //$$             case SERVER -> "Server";
+//#if MC >= 1.20.6
+//$$  			case STARTUP -> "Startup";
+//#endif
 //$$         };
 //$$     }
 //$$
