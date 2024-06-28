@@ -2,7 +2,7 @@ import java.util.*
 
 plugins {
     kotlin("jvm") version "1.5.21" apply false
-    id("dev.architectury.loom") version "1.6-SNAPSHOT" apply false
+    id("dev.architectury.loom") version "1.6.1717" apply false
     id("com.jab125.preprocessor.preprocess") version "0.2.1"
     id("com.github.hierynomus.license") version "0.15.0"
     id ("architectury-plugin") version "3.4-SNAPSHOT" apply false
