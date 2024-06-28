@@ -37,7 +37,7 @@
 //$$
 //$$     @Override
 //$$     protected Identifier getId() {
-//$$         return new Identifier("roughlyenoughconfigscreens:forge");
+//$$         return com.jab125.clothintegration.ConfigIntegration.id.id("roughlyenoughconfigscreens:forge");
 //$$     }
 //$$
 //$$     private static EnumMap<ModConfig.Type, ModConfig> getConfigs(ModContainer container) {

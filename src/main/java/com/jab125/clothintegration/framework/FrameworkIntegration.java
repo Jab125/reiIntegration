@@ -32,7 +32,7 @@ public class FrameworkIntegration extends Integration {
 	}
 	@Override
 	protected Identifier getId() {
-		return new Identifier("roughlyenoughconfigscreens:framework");
+		return com.jab125.clothintegration.ConfigIntegration.id("roughlyenoughconfigscreens:framework");
 	}
 }
 //#endif

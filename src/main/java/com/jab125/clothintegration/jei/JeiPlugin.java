@@ -10,7 +10,7 @@ import net.minecraft.util.Identifier;
 public class JeiPlugin implements IModPlugin {
     @Override
     public Identifier getPluginUid() {
-        return new Identifier("jeicloth");
+        return com.jab125.clothintegration.ConfigIntegration.id("jeicloth");
     }
     public static IJeiConfigManager manager;
 

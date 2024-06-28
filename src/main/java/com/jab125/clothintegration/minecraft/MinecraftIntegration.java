@@ -18,6 +18,6 @@ public class MinecraftIntegration extends Integration {
 
     @Override
     protected Identifier getId() {
-        return new Identifier("roughlyenoughconfigscreens:minecraft");
+        return com.jab125.clothintegration.ConfigIntegration.id("roughlyenoughconfigscreens:minecraft");
     }
 }

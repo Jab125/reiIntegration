@@ -19,7 +19,7 @@ public class JeiIntegration extends Integration {
 
     @Override
     protected Identifier getId() {
-        return new Identifier("roughlyenoughconfigscreens:jei");
+        return com.jab125.clothintegration.ConfigIntegration.id("roughlyenoughconfigscreens:jei");
     }
 }
 //#endif

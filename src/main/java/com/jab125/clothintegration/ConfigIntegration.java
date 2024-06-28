@@ -16,6 +16,7 @@ import com.jab125.clothintegration.util.ModConfig;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.ConfigHolder;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
+import net.minecraft.util.Identifier;
 
 public class ConfigIntegration {
     public static ConfigIntegration INSTANCE;
@@ -25,6 +26,10 @@ public class ConfigIntegration {
             return;
         }
         INSTANCE = new ConfigIntegration();
+    }
+
+    public static Identifier id(String path) {
+        return Identifier.tryParse(path);
     }
 
     private ConfigIntegration() {
