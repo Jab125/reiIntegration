@@ -129,7 +129,7 @@
 //$$                         }
 //$$                         return Optional.empty();
 //$$                     });
-//$$                     main.addEntry(entry.setTooltip(Text.translatable(right.getComment())).build());
+//$$                     main.addEntry((right.getComment() == null ? entry : entry.setTooltip(Text.translatable(right.getComment()))).build());
 //$$                 } else {
 //$$                     main.addEntry(entryBuilder.startTextDescription(Text.empty().formatted(Formatting.RED).append(title.copy().formatted(Formatting.BOLD)).append(" can't be modified in config yet!")).setTooltip(Text.of(right.getComment()), Text.literal("Report to @jab125 on Discord!").formatted(Formatting.RED)).build());
 //$$                 }
