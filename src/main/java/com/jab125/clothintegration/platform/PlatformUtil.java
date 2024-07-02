@@ -174,7 +174,7 @@ public class PlatformUtil {
         //#if MC < 1.21
         configBuilder.setDefaultBackgroundTexture(identifier);
         //#if MC >= 1.20.5
-        configBuilder.setTransparentBackground(false);
+        //$$ configBuilder.setTransparentBackground(false);
         //#endif
         //#endif
     }
