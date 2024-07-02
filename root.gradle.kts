@@ -77,7 +77,10 @@ subprojects {
 
     project.extra["mcp"] = javaslang.Function1<String, Int?> { string ->
         if (string == null) return@Function1 null
-        val splat : List<String> = string.split(".")
+        var splat : List<String> = string.split(".")
+        if (splat.size == 2) { // 1.19 -> 1.19.0
+            splat = List(3) { x -> if (x <= 1) splat[x] else "0" }
+        }
         val versionStr : StringBuilder = StringBuilder()
         splat.forEach {
             versionStr.append(it.padStart(2, '0'))
