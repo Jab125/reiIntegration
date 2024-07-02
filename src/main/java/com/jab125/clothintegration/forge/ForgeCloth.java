@@ -62,8 +62,8 @@
 //$$             case CLIENT -> "Client";
 //$$             case COMMON -> "Common";
 //$$             case SERVER -> "Server";
-//#if MC >= 1.20.6
-//$$  			case STARTUP -> "Startup";
+//#if MC >= 1.20.6 && LOADER == NEO
+//$$             case STARTUP -> "Startup";
 //#endif
 //$$         };
 //$$     }
@@ -164,6 +164,9 @@
 //$$
 //$$     private static Set<ModConfig> getConfigs(String id) {
 //$$         HashSet<ModConfig> hashMap = new HashSet<>();
+//#if MC >= 1.20.6 && LOADER == NEO
+//$$         addConfigFor(hashMap, ModConfig.Type.STARTUP, id);
+//#endif
 //$$         addConfigFor(hashMap, ModConfig.Type.CLIENT, id);
 //$$         addConfigFor(hashMap, ModConfig.Type.COMMON, id);
 //$$         addConfigFor(hashMap, ModConfig.Type.SERVER, id);
