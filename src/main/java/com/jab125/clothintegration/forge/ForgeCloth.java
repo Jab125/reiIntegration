@@ -119,7 +119,15 @@
 //$$                     entry = entryBuilder.startDoubleField(title, (double) left.get()).setDefaultValue((double) right.getDefault()).setSaveConsumer(a -> ((ForgeConfigSpec.ConfigValue)left).set(a));
 //$$                 } else if (left instanceof ForgeConfigSpec.EnumValue) {
 //$$                     entry = entryBuilder.startEnumSelector(title, (Class)getEnumClass((ForgeConfigSpec.EnumValue<?>)left), (Enum)((ForgeConfigSpec.EnumValue) left).get()).setEnumNameProvider(StringUtils.enumToText(getEnumClass((ForgeConfigSpec.EnumValue<?>)left))).setDefaultValue((Enum)((ForgeConfigSpec.EnumValue) left).getDefault()).setSaveConsumer(a -> ((ForgeConfigSpec.ConfigValue)left).set(a));
-//$$                 } else {
+//$$                 } else if (left.getClass().equals(ForgeConfigSpec.ConfigValue.class)) {
+//$$                     // Guesses to what type the ConfigValue is
+//$$                     if (right.getDefault() instanceof String) {
+//$$ 						entry = entryBuilder.startStrField(title, (String) left.get()).setDefaultValue((String) right.getDefault()).setSaveConsumer(a -> ((ForgeConfigSpec.ConfigValue)left).set(a));
+//$$                     } else if (right.getDefault() instanceof Double) {
+//$$                         entry = entryBuilder.startDoubleField(title, (double) left.get()).setDefaultValue((double) right.getDefault()).setSaveConsumer(a -> ((ForgeConfigSpec.ConfigValue)left).set(a));
+//$$                     }
+//$$                 }
+//$$                 else {
 //$$                     System.out.println("NONE FOR: " + right.getClazz());
 //$$                 }
 //$$                 if (entry != null) {
@@ -131,7 +139,8 @@
 //$$                     });
 //$$                     main.addEntry((right.getComment() == null ? entry : entry.setTooltip(Text.translatable(right.getComment()))).build());
 //$$                 } else {
-//$$                     main.addEntry(entryBuilder.startTextDescription(Text.empty().formatted(Formatting.RED).append(title.copy().formatted(Formatting.BOLD)).append(" can't be modified in config yet!")).setTooltip(Text.of(right.getComment()), Text.literal("Report to @jab125 on Discord!").formatted(Formatting.RED)).build());
+//$$                     Text[] comments = right.getComment() == null ? new Text[]{Text.literal("Report to @jab125 on Discord!").formatted(Formatting.RED)} : new Text[]{Text.of(right.getComment()), Text.literal("Report to @jab125 on Discord!").formatted(Formatting.RED)};
+//$$                     main.addEntry(entryBuilder.startTextDescription(Text.empty().formatted(Formatting.RED).append(title.copy().formatted(Formatting.BOLD)).append(" can't be modified in config yet!")).setTooltip(comments).build());
 //$$                 }
 //$$                 //main.addEntry(entryBuilder.startTextField(Text.translatable(right.getTranslationKey()), left.get().toString()).build());
 //$$             }catch (Exception e){e.printStackTrace();}
