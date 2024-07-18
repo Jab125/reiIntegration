@@ -1,4 +1,4 @@
 {
-  "forge.configgui.compressLanIPv6Addresses": "Compress IPv6 Addresses",
-  "neoforge.configgui.compressLanIPv6Addresses": "Compress IPv6 Addresses"
+  "forge.configgui.compressLanIPv6Addresses": "Compress Lan IPv6 Addresses",
+  "neoforge.configgui.compressLanIPv6Addresses": "Compress Lan IPv6 Addresses"
 }
