@@ -7,16 +7,21 @@
 //$$ import net.minecraft.util.Identifier;
 //#if LOADER == NEO && MC >= 1.20.5
 //$$ import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
+//#if MC >= 1.21
+//$$ import net.neoforged.fml.config.ConfigTracker;
+//$$ import java.util.concurrent.ConcurrentHashMap;
+//#endif
 //#else
 //$$ import net.minecraftforge.client.ConfigScreenHandler;
 //#endif
 //$$ import net.minecraftforge.fml.ModContainer;
 //$$ import net.minecraftforge.fml.ModList;
-//$$ import net.minecraftforge.fml.config.ConfigTracker;
 //$$ import net.minecraftforge.fml.config.ModConfig;
 //$$ import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 //$$
 //$$ import java.util.EnumMap;
+//$$ import java.util.List;
+//$$ import java.util.Map;
 //$$ import java.util.Set;
 //$$
 //$$ public class ForgeIntegration extends Integration {
@@ -40,8 +45,23 @@
 //$$         return com.jab125.clothintegration.ConfigIntegration.id("roughlyenoughconfigscreens:forge");
 //$$     }
 //$$
-//$$     private static EnumMap<ModConfig.Type, ModConfig> getConfigs(ModContainer container) {
-//$$         return ObfuscationReflectionHelper.getPrivateValue(ModContainer.class, container, "configs"); // mixin on forge is unreliable
+//$$     private static Map<ModConfig.Type, ModConfig> getConfigs(ModContainer container) {
+        //#if MC < 1.21 || LOADER == FORGE
+        //$$ return ObfuscationReflectionHelper.getPrivateValue(ModContainer.class, container, "configs"); // mixin on forge is unreliable
+        //#else
+        //$$ return fromList(((ConcurrentHashMap<String, List<ModConfig>>)ObfuscationReflectionHelper.getPrivateValue(ConfigTracker.class, ConfigTracker.INSTANCE, "configsByMod")).get(container.getModId()));
+        //#endif
+//$$     }
+//$$
+//$$     private static Map<ModConfig.Type, ModConfig> fromList(List<ModConfig> configs) {
+//$$         if (configs == null || configs.isEmpty()) {
+//$$             return Map.of(); // Safe, since this is Java 21, not Java 8.
+//$$         }
+//$$         EnumMap<ModConfig.Type, ModConfig> map = new EnumMap<>(ModConfig.Type.class);
+//$$         for (ModConfig config : configs) {
+//$$             map.put(config.getType(), config);
+//$$         }
+//$$         return map;
 //$$     }
 //$$ }
 //#endif

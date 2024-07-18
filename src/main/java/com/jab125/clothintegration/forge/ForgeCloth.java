@@ -145,9 +145,17 @@
 //$$                 //main.addEntry(entryBuilder.startTextField(Text.translatable(right.getTranslationKey()), left.get().toString()).build());
 //$$             }catch (Exception e){e.printStackTrace();}
 //$$         }
-//$$         configBuilder.setSavingRunnable(config::save);
+//$$         configBuilder.setSavingRunnable(savingRunnable(config));
 //$$         return queueConfigScreen(prevFuture, configBuilder.build());
 //$$         //ConfigCategory configCategory = configBuilder.getOrCreateCategory(Text.of(config.getFileName()));
+//$$     }
+//$$
+//$$     private static Runnable savingRunnable(ModConfig config) {
+        //#if MC < 1.21 || LOADER == FORGE
+        //$$ return config::save;
+        //#else
+        //$$ return ((ModConfigSpec) config.getSpec())::save;
+        //#endif
 //$$     }
 //$$
 //$$     private static Class<?> getEnumClass(ForgeConfigSpec.EnumValue<?> enumValue) {
@@ -165,10 +173,18 @@
 //$$             if (so.getValue() instanceof AbstractConfig config1) {
 //$$                 getForgeConfigFields(values, config1, spec);
 //$$             } else if (so.getValue() instanceof ForgeConfigSpec.ConfigValue<?> value) {
-//$$                 ForgeConfigSpec.ValueSpec valueSpec = spec.getRaw(value.getPath());
+//$$                 ForgeConfigSpec.ValueSpec valueSpec = getValueSpec(spec, value.getPath());
 //$$                 values.add(new Pair<>(value, valueSpec));
 //$$             }
 //$$         }
+//$$     }
+//$$
+//$$     private static ForgeConfigSpec.ValueSpec getValueSpec(ForgeConfigSpec spec, List<String> path) {
+        //#if MC < 1.21 || LOADER == FORGE
+        //$$ return spec.getRaw(path);
+        //#else
+        //$$ return spec.getSpec().getRaw(path);
+        //#endif
 //$$     }
 //$$
 //$$     private static Set<ModConfig> getConfigs(String id) {
