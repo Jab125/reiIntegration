@@ -1,7 +1,7 @@
 package com.jab125.clothintegration;
 
 //#if LOADER <= FORGE
-//$$ import com.jab125.clothintegration.forge.ForgeIntegration;
+import com.jab125.clothintegration.forge.ForgeIntegration;
 //#endif
 //#if HAS:FRAMEWORK
 import com.jab125.clothintegration.framework.FrameworkIntegration;
@@ -39,7 +39,7 @@ public class ConfigIntegration {
         //#endif
         if (!PlatformUtil.getLoader().isFabricLike()) new MinecraftIntegration();
         //#if LOADER <= FORGE
-        //$$ new ForgeIntegration();
+        new ForgeIntegration();
         //#endif
         //#if HAS:FRAMEWORK
         if (PlatformUtil.isModInstalled("framework")) new FrameworkIntegration();

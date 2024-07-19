@@ -14,8 +14,8 @@ public class BackpackedForcedConfigScreenMixin {
 	@Inject(method = "openConfigScreen()V", at = @At("HEAD"), cancellable = true, require = 0)
 	void openConfigScreen(CallbackInfo callbackInfo) {
 		//#if LOADER == FABRIC
-		MinecraftClient.getInstance().setScreen(com.terraformersmc.modmenu.ModMenu.getConfigScreen("backpacked", MinecraftClient.getInstance().currentScreen));
-		callbackInfo.cancel();
+//$$ 		MinecraftClient.getInstance().setScreen(com.terraformersmc.modmenu.ModMenu.getConfigScreen("backpacked", MinecraftClient.getInstance().currentScreen));
+//$$ 		callbackInfo.cancel();
 		//#endif
 	}
 }

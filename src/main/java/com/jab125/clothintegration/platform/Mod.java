@@ -1,9 +1,9 @@
 package com.jab125.clothintegration.platform;
 
 //#if LOADER <= FORGE
-//$$ import net.minecraftforge.fml.ModContainer;
+import net.minecraftforge.fml.ModContainer;
 //#elseif LOADER == FABRIC
-import net.fabricmc.loader.api.ModContainer;
+//$$ import net.fabricmc.loader.api.ModContainer;
 //#endif
 
 public interface Mod {
