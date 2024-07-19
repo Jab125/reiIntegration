@@ -364,7 +364,7 @@ processResources {
             }
         }
 
-        if (loader == -1) {
+        if (loader == -1 && mcVersion != 12001) {
             fileTree(dir: outputs.files.asPath, include: "META-INF/mods.toml").each { File file ->
                 file.text += "\n\n[[mixins]]\nconfig = \"clothintegration.mixins.json\""
                 file.text = file.text.replaceAll("modId = \"forge\"", "modId = \"neoforge\"")
