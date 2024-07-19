@@ -5,6 +5,7 @@ import com.electronwill.nightconfig.core.AbstractConfig;
 import com.electronwill.nightconfig.core.UnmodifiableConfig;
 import com.jab125.clothintegration.cloth.ButtonBuilder;
 import com.jab125.clothintegration.mixin.AbstractConfigScreenAccessor;
+import com.jab125.clothintegration.mixin.FieldBuilderAccessor;
 import com.jab125.clothintegration.platform.PlatformUtil;
 import com.jab125.clothintegration.util.Pair;
 import com.jab125.clothintegration.util.StringUtils;
@@ -26,6 +27,7 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
 import java.util.*;
+import java.util.function.Function;
 
 public class ForgeCloth {
     public Screen createScreen(Screen prev, String id) {
@@ -107,31 +109,37 @@ public class ForgeCloth {
                 String tk = right.getTranslationKey();
                 Text title = Text.translatableWithFallback(tk != null ? tk : "config." + left.getPath().get(left.getPath().size()-1), StringUtils.convertToSentence(left.getPath().get(left.getPath().size()-1)));
                 AbstractFieldBuilder<?, ?, ?> entry = null;
-                if (Boolean.class.equals(right.getClazz()) || left instanceof ForgeConfigSpec.BooleanValue) {
-                    entry = entryBuilder.startBooleanToggle(title, (boolean) left.get()).setDefaultValue((Boolean) right.getDefault()).setSaveConsumer(a -> ((ForgeConfigSpec.ConfigValue)left).set(a));
-                } else if (String.class.equals(right.getClazz())) {
-                    entry = entryBuilder.startStrField(title, (String) left.get()).setDefaultValue((String) right.getDefault()).setSaveConsumer(a -> ((ForgeConfigSpec.ConfigValue)left).set(a));
-                } else if (Integer.class.equals(right.getClazz()) || left instanceof ForgeConfigSpec.IntValue) {
-                    entry = entryBuilder.startIntField(title, (int) left.get()).setDefaultValue((int) right.getDefault()).setSaveConsumer(a -> ((ForgeConfigSpec.ConfigValue)left).set(a));
-                } else if (Float.class.equals(right.getClazz())) {
-                    entry = entryBuilder.startFloatField(title, (float) left.get()).setDefaultValue((float) right.getDefault()).setSaveConsumer(a -> ((ForgeConfigSpec.ConfigValue)left).set(a));
-                } else if (Double.class.equals(right.getClazz()) || left instanceof ForgeConfigSpec.DoubleValue) {
-                    entry = entryBuilder.startDoubleField(title, (double) left.get()).setDefaultValue((double) right.getDefault()).setSaveConsumer(a -> ((ForgeConfigSpec.ConfigValue)left).set(a));
+                // right.getClazz()
+                RangeUtils.RangeWrapper<?> range = RangeUtils.wrapRange(right.getRange());
+                range.key = left.getPath().get(left.getPath().size()-1);
+                if (Boolean.class.equals(right.getClazz()) || right.getDefault() instanceof Boolean) {
+                    entry = entryBuilder.startBooleanToggle(title, (boolean) left.get());
+                } else if (String.class.equals(right.getClazz()) || right.getDefault() instanceof String) {
+                    entry = entryBuilder.startStrField(title, (String) left.get());
+                } else if (Integer.class.equals(right.getClazz()) || right.getDefault() instanceof Integer) {
+                    entry = !range.isUsable(Integer.class) ? entryBuilder.startIntField(title, (int) left.get()) : entryBuilder.startIntSlider(title, (Integer) left.get(), (Integer) range.getMin(), (Integer) range.getMax());
+                } else if (Long.class.equals(right.getClazz()) || right.getDefault() instanceof Long) {
+                    entry = !range.isUsable(Long.class) ? entryBuilder.startLongField(title, (long) left.get()) : entryBuilder.startLongSlider(title, (Long) left.get(), (Long) range.getMin(), (Long) range.getMax());
+                } else if (Float.class.equals(right.getClazz()) || right.getDefault() instanceof Float) {
+                    entry = !range.isUsable(Float.class) ? entryBuilder.startFloatField(title, (float) left.get()) : entryBuilder.startFloatField(title, (float) left.get()).setErrorSupplier(range::errorSupplier);
+                } else if (Double.class.equals(right.getClazz()) || right.getDefault() instanceof Double) {
+                    entry = !range.isUsable(Double.class) ? entryBuilder.startDoubleField(title, (double) left.get()) : entryBuilder.startDoubleField(title, (double) left.get()).setErrorSupplier(range::errorSupplier);
                 } else if (left instanceof ForgeConfigSpec.EnumValue) {
-                    entry = entryBuilder.startEnumSelector(title, (Class)getEnumClass((ForgeConfigSpec.EnumValue<?>)left), (Enum)((ForgeConfigSpec.EnumValue) left).get()).setEnumNameProvider(StringUtils.enumToText(getEnumClass((ForgeConfigSpec.EnumValue<?>)left))).setDefaultValue((Enum)((ForgeConfigSpec.EnumValue) left).getDefault()).setSaveConsumer(a -> ((ForgeConfigSpec.ConfigValue)left).set(a));
-                } else if (left.getClass().equals(ForgeConfigSpec.ConfigValue.class)) {
-                    // Guesses to what type the ConfigValue is
-                    if (right.getDefault() instanceof String) {
-						entry = entryBuilder.startStrField(title, (String) left.get()).setDefaultValue((String) right.getDefault()).setSaveConsumer(a -> ((ForgeConfigSpec.ConfigValue)left).set(a));
-                    } else if (right.getDefault() instanceof Double) {
-                        entry = entryBuilder.startDoubleField(title, (double) left.get()).setDefaultValue((double) right.getDefault()).setSaveConsumer(a -> ((ForgeConfigSpec.ConfigValue)left).set(a));
-                    }
-                }
-                else {
+                    entry = !range.isUsable(right.getClazz()) ? entryBuilder.startEnumSelector(title, (Class<Enum>) right.getClazz(), (Enum) left.get()).setEnumNameProvider(StringUtils.enumToText(getEnumClass((ForgeConfigSpec.EnumValue<?>)left))) : entryBuilder.startEnumSelector(title, (Class<Enum>) right.getClazz(), (Enum) left.get()).setEnumNameProvider(StringUtils.enumToText(getEnumClass((ForgeConfigSpec.EnumValue<?>)left))).setErrorSupplier(range::errorSupplier);
+                } else {
                     System.out.println("NONE FOR: " + right.getClazz());
                 }
                 if (entry != null) {
+                    ((AbstractFieldBuilder) entry).setDefaultValue(right.getDefault());
+                    entry.setSaveConsumer(a -> ((ForgeConfigSpec.ConfigValue) left).set(a));
+                    Function<Object, Optional<Text>> errorSupplier = ((FieldBuilderAccessor) entry).getErrorSupplier();
                     entry.setErrorSupplier(v -> {
+                        if (errorSupplier != null) {
+                            Optional<Text> applied = errorSupplier.apply(v);
+                            if (applied.isPresent()) {
+                                return applied;
+                            }
+                        }
                         if (!right.test(v)) {
                             return Optional.of(Text.literal("Invalid config value!"));
                         }
