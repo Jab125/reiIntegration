@@ -1,13 +1,10 @@
 //#if LOADER<=FORGE
 package com.jab125.clothintegration;
 
-import com.jab125.clothintegration.forge.test.TestConfig;
 import com.jab125.clothintegration.platform.PlatformUtil;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import java.util.function.Supplier;
@@ -25,7 +22,7 @@ public class ForgeMain {
 		//#endif
 		Supplier<Supplier<Runnable>> runnable = () -> () -> () -> {
 			bus.addListener(this::loaded);
-			ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, TestConfig.CLIENT_SPEC);
+			// ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, TestConfig.CLIENT_SPEC);
 		};
 		if (FMLEnvironment.dist == Dist.CLIENT) runnable.get().get().run();
 	}
