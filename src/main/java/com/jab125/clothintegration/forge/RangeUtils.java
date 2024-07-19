@@ -1,6 +1,8 @@
+//#if LOADER <= FORGE
 package com.jab125.clothintegration.forge;
 
 import net.minecraft.text.Text;
+import net.minecraftforge.common.ForgeConfigSpec;
 
 import java.lang.reflect.Method;
 import java.util.Optional;
@@ -13,7 +15,7 @@ public class RangeUtils {
     private static final Method getClazz;
     static {
         try {
-            clazz = Class.forName("net.minecraftforge.common.ForgeConfigSpec$Range");
+            clazz = Class.forName(ForgeConfigSpec.class.getName() + "$Range");
             getMin = clazz.getDeclaredMethod("getMin");
             getMin.setAccessible(true);
             getMax = clazz.getDeclaredMethod("getMax");
@@ -92,3 +94,4 @@ public class RangeUtils {
         }
     }
 }
+//#endif
