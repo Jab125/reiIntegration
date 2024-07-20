@@ -1,21 +1,19 @@
 modLoader = "javafml"
 loaderVersion = "*"
-#issueTrackerURL = ""
 license = "LGPL-2.1-only"
 
 [[mods]]
-modId = "roughlyenoughconfigscreens"
+modId = "reiintegration"
 version = "${version}"
-displayName = "Roughly Enough Config Screens"
+displayName = "REI Integration"
 authors = "Jab125"
 description = '''
-Automatically creates config screens for mods that use either the Forge config system or the Framework config system.
-Also supports JEI.
+REI support for mods that don't provide REI support by default!!
 '''
-logoFile="recs.png"
+logoFile="logo.png"
 displayTest="IGNORE_ALL_VERSION" # doesn't matter if mod is installed on client or on server and vice versa.
 
-[[dependencies.roughlyenoughconfigscreens]]
+[[dependencies.reiintegration]]
 modId = "forge"
 mandatory = true
 type="required"
@@ -23,7 +21,7 @@ versionRange = "$forge"
 ordering = "NONE"
 side = "BOTH"
 
-[[dependencies.roughlyenoughconfigscreens]]
+[[dependencies.reiintegration]]
 modId = "minecraft"
 mandatory = true
 type="required"
@@ -31,15 +29,23 @@ versionRange = "$minecraftVersion"
 ordering = "NONE"
 side = "BOTH"
 
-[[dependencies.roughlyenoughconfigscreens]]
-modId="jei"
-mandatory = false
-type="optional"
-versionRange="$jeiDep"
+[[dependencies.reiintegration]]
+modId="roughlyenoughitems"
+mandatory = true
+type="required"
+versionRange="$reiDep"
 ordering="NONE"
 side="BOTH"
 
-[[dependencies.roughlyenoughconfigscreens]]
+[[dependencies.reiintegration]]
+modId="refurbished_furniture"
+mandatory = true
+type="required"
+versionRange="$rfmDep"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.reiintegration]]
 modId="cloth_config"
 mandatory=true
 type="required"
@@ -47,5 +53,5 @@ versionRange="$clothConfigDep"
 ordering="NONE"
 side="BOTH"
 
-[modproperties.roughlyenoughconfigscreens]
+[modproperties.reiintegration]
 configuredBackground="minecraft:textures/block/stone.png"

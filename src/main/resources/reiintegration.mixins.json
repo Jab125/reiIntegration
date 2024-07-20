@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "com.jab125.reiintegration.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "minVersion": "0.7.11",
+  "client": [
+  ],
+  "mixins": [
+  ],
+  "injectors": {
+    "maxShiftBy": 5,
+    "defaultRequire": 1
+  }
+}

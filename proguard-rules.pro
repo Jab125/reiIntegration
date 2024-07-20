@@ -8,31 +8,18 @@
 #-optimizationpasses 0
 
 -flattenpackagehierarchy
--repackageclasses 'com.jab125.o0lIo00Ll'
+-repackageclasses 'dev.jab125.l0lIo00Ll'
 
--keep class com.jab125.clothintegration.FabricMain {
+-keep class dev.jab125.reiintegration.ReiIntegration {
     public *;
 }
 
--keep class com.jab125.clothintegration.ForgeMain {
+-keep class dev.jab125.reiintegration.plugin.rfm.RfmPluginClient {
     public *;
 }
 
--keep class com.jab125.clothintegration.mixin.** {
-    *;
-}
-
--keep class com.jab125.clothintegration.jei.JeiPlugin {
-}
-
--keep class com.jab125.clothintegration.platform.ModMenuCompat {
-}
-
--keep class com.jab125.clothintegration.MixinPlugin {
-}
-
--keep class com.jab125.clothintegration.util.ModConfig {
-    *;
+-keep class dev.jab125.reiintegration.plugin.rfm.RfmPluginServer {
+    public *;
 }
 
 

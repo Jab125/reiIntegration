@@ -1,39 +1,40 @@
 {
   "schemaVersion": 1,
-  "id": "roughlyenoughconfigscreens",
+  "id": "reiintegration",
   "version": "${version}",
-  "name": "Roughly Enough Config Screens",
-  "description": "Adds a configuration screen for JEI and Framework using Cloth Config.",
-  "accessWidener": "clothintegration.accesswidener",
+  "name": "REI Integration",
+  "description": "REI support for mods that don't provide REI support by default!",
+  "accessWidener": "reiintegration.accesswidener",
   "authors": [
     "Jab125"
   ],
   "contact": {
   },
   "license": "LGPL-2.1-only",
-  "icon": "recs.png",
-  "environment": "client",
+  "icon": "logo.png",
+  "environment": "*",
   "entrypoints": {
+    "rei_client": [
+      "dev.jab125.reiintegration.plugin.rfm.RfmPluginClient"
+    ],
+    "rei_server": [
+      "dev.jab125.reiintegration.plugin.rfm.RfmPluginServer"
+    ],
     "client": [
-      "com.jab125.clothintegration.FabricMain"
-    ],
-    "jei_mod_plugin": [
-      "com.jab125.clothintegration.jei.JeiPlugin"
-    ],
-    "modmenu": [
-      "com.jab125.clothintegration.platform.ModMenuCompat"
+      "dev.jab125.reiintegration.ReiIntegration::onInitializeClient"
     ]
   },
   "mixins": [
-    "clothintegration.mixins.json"
+    "reiintegration.mixins.json"
   ],
   "depends": {
     "fabric": "*",
     "minecraft": "${minecraftVersion}",
-    "cloth-config": "${clothConfigDep}"
+    "cloth-config": "${clothConfigDep}",
+    "refurbished_furniture": "${rfmDep}",
+    "roughlyenoughitems": "${reiDep}"
   },
   "recommends": {
-    "jei": "${jeiDep}"
   },
   "custom": {
     "modmenu": {

@@ -14,34 +14,16 @@ plugins {
 
 
 preprocess {
-    val mc12100neo = createNode("1.21-neo", 12100, "yarn")
-    val mc12100fabric = createNode("1.21-fabric", 12100, "yarn")
-    val mc12006neo = createNode("1.20.6-neo", 12006, "yarn")
-    val mc12006fabric = createNode("1.20.6-fabric", 12006, "yarn")
     val mc12004neo = createNode("1.20.4-neo", 12004, "yarn")
+    val mc12004forge = createNode("1.20.4-forge", 12004, "yarn")
     val mc12004fabric = createNode("1.20.4-fabric", 12004, "yarn")
-    val mc12002neo = createNode("1.20.2-neo", 12002, "yarn")
-    val mc12002forge = createNode("1.20.2-forge", 12002, "yarn")
-    val mc12002fabric = createNode("1.20.2-fabric", 12002, "yarn")
-    val mc12001neo = createNode("1.20.1-neo", 12001, "yarn")
     val mc12001forge = createNode("1.20.1-forge", 12001, "yarn")
     val mc12001 = createNode("1.20.1-fabric", 12001, "yarn")
-    val mc11904forge = createNode("1.19.4-forge", 11904, "yarn")
-    val mc11904 = createNode("1.19.4-fabric", 11904, "yarn")
 
-    mc12100neo.link(mc12100fabric)
-    mc12100fabric.link(mc12006fabric)
-    mc12006neo.link(mc12006fabric)
-    mc12006fabric.link(mc12004fabric)
-    mc12004neo.link(mc12004fabric)
-    mc12004fabric.link(mc12002neo)
-    mc12002neo.link(mc12002forge, file("versions/mapping-forge-neoforge-1.20.2.txt"))
-    mc12002forge.link(mc12002fabric)
-    mc12002fabric.link(mc12001)
-    mc12001neo.link(mc12001forge)
+    mc12004neo.link(mc12004forge, file("versions/mapping-forge-neoforge-1.20.2.txt"))
+    mc12004forge.link(mc12004fabric)
+    mc12004fabric.link(mc12001)
     mc12001forge.link(mc12001, file("versions/mapping-fabric-forge-1.20.1.txt"))
-    mc12001.link(mc11904)
-    mc11904forge.link(mc11904, file("versions/mapping-fabric-forge-1.19.4.txt"))
 }
 val packageJar by tasks.creating(Copy::class) {
     into("$buildDir/libs/${computeVersion()}")

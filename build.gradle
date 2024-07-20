@@ -65,7 +65,7 @@ if (loader != 1) {
     project.ext["loom.platform"] = (loader == 0 || (loader == -1 && mcVersion == 12001)) ? "forge" : loader == -1 ? "neoforge" : loader == 2 ? "quilt" : nodontdothat()
 }
 
-group 'com.jab125.jeicloth'
+group 'com.jab125.reiintegration'
 def computeVersion() {
     return "${rootProject.properties.version}"
 }
@@ -156,11 +156,13 @@ repositories {
         name = "MrCrayfish (GitHub)"
         url = "https://maven.pkg.github.com/MrCrayfish/Maven"
         credentials {
+
         }
         content {
             includeGroup "com.mrcrayfish"
         }
     }
+    maven { url = "https://mvn.devos.one/releases/" }
 }
 
 apply plugin: "me.modmuss50.remotesign"
@@ -186,7 +188,7 @@ preprocess {
 
     {
         def map = [
-                "HAS:JEI": _int(!!project.properties.jeiVersion),
+                "HAS:RFM": _int(!!project.properties.refurbishedFurnitureVersion),
                 "HAS:FRAMEWORK": _int(!!project.properties.frameworkVersion)
         ]
         for (final Map.Entry<String, Integer> f in map) {
@@ -206,7 +208,7 @@ preprocess {
             ".frag": PreprocessTask.DEFAULT_KEYWORDS,
     ])
 
-    patternAnnotation.set("com.jab125.clothintegration.Pattern")
+    patternAnnotation.set("dev.jab125.reiintegration.Pattern")
 }
 
 def mcVersionStr = "${(int)(mcVersion/10000)}.${(int)(mcVersion/100)%100}" + (mcVersion%100==0 ? '' : ".${mcVersion%100}")
@@ -215,20 +217,20 @@ tasks.withType(JavaCompile).configureEach {
     if (mcVersion >= 11700)
         options.release = mcVersion >= 12005 ? 21 : mcVersion >= 11800 ? 17 : mcVersion >= 11700 ? 16 : 8
 }
-archivesBaseName = "roughly-enough-config-screens-" + mcVersionStr + "-" + (loader == -1 ? "neo" : loader == 0 ? "forge" : loader == 1 ? "fabric" : loader == 2 ? "quilt" : nodontdothat())
+archivesBaseName = "rei-integrations-" + mcVersionStr + "-" + (loader == -1 ? "neoforge" : loader == 0 ? "forge" : loader == 1 ? "fabric" : loader == 2 ? "quilt" : nodontdothat())
 
 loom {
     //accessWidenerPath = getRootProject().projectDir.toPath().resolve("src/main/resources/modpack-update-checker.accesswidener").toFile()
     if (loader != -1 || mcVersion == 12001) {
-        mixin.defaultRefmapName.set('clothintegration.refmap.json')
+        mixin.defaultRefmapName.set('reiintegration.refmap.json')
     }
     runConfigs.all {
         ideConfigGenerated = true
     }
-    accessWidenerPath = getRootProject().projectDir.toPath().resolve("src/main/resources/clothintegration.accesswidener").toFile()
+    accessWidenerPath = getRootProject().projectDir.toPath().resolve("src/main/resources/reiintegration.accesswidener").toFile()
     if (loader == 0 || (loader == -1 && mcVersion == 12001)) {
         forge {
-            mixinConfig "clothintegration.mixins.json"
+            mixinConfig "reiintegration.mixins.json"
         }
     }
 }
@@ -263,6 +265,34 @@ dependencies {
     if (frameworkVersion) {
         modImplementation "com.mrcrayfish:framework-$frameworkLoader:$frameworkVersion"
     }
+    def rfmVersion = project.properties.refurbishedFurnitureVersion
+    if (frameworkVersion) {
+        modImplementation "com.mrcrayfish:refurbished_furniture-$frameworkLoader:$rfmVersion", {
+            exclude(group: "mezz")
+            exclude(group: "mezz.jei")
+            exclude(group: "com.mrcrayfish", module: "framework-$frameworkLoader")
+            exclude(group: "com.mrcrayfish", module: "catalogue-$frameworkLoader")
+            exclude(group: "net.minecraftforge", module: "forge")
+            exclude(group: "net.neoforged", module: "neoforge")
+            exclude(group: "com.blamejared.crafttweaker")
+        }
+    }
+
+    def architecturyVersion = project.properties.architecturyVersion
+    if (architecturyVersion) {
+        modImplementation "dev.architectury:architectury-$frameworkLoader:$architecturyVersion"
+    }
+
+    modApi "me.shedaniel.cloth:cloth-config-$frameworkLoader:$project.properties.clothConfig", {
+        exclude(group: "net.fabricmc.fabric-api")
+        exclude(group: "net.fabricmc")
+    }
+
+    def reiVersion = project.properties.reiVersion
+    modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-$frameworkLoader:$reiVersion"
+
+    modCompileOnly "me.shedaniel:RoughlyEnoughItems-api-$frameworkLoader:$reiVersion"
+    modCompileOnly "me.shedaniel:RoughlyEnoughItems-default-plugin-$frameworkLoader:$reiVersion"
 
     if (loader >= 1) { // fabric or quilt
         modImplementation "com.terraformersmc:modmenu:${project.properties.modMenu}", {
@@ -282,33 +312,6 @@ dependencies {
             nodontdothat()
         }
     }
-    {
-        def loaderName = loader == 0 ? "forge" : loader == -1 ? mcVersion == 12001 ? "forge" : "neoforge" : "fabric"
-        System.out.println("applying " + loader + " " + loaderName)
-        if (project.properties.jeiVersion) {
-            modImplementation "mezz.jei:jei-${project.name.split('-')[0]}-$loaderName:${project.properties.jeiVersion}", {
-                transitive = false
-            }
-        }
-
-//        modRuntimeOnly "mezz.jei:jei-${project.name.split('-')[0]}-$loaderName:$project.properties.jeiVersion", {
-//            transitive = false
-//        }
-//        if (loader <= 0) {
-//            forgeRuntimeLibrary "mezz.jei:jei-${project.name.split('-')[0]}-common:$project.properties.jeiVersion", {
-//                exclude(group: "net.fabricmc.fabric-api")
-//                exclude(group: "net.fabricmc")
-//            }
-//        }
-        modApi "me.shedaniel.cloth:cloth-config-$loaderName:$project.properties.clothConfig", {
-            exclude(group: "net.fabricmc.fabric-api")
-            exclude(group: "net.fabricmc")
-        }
-
-        if (loader == -1 && mcVersion == 1_20_01) {
-            modLocalRuntime "squeek.appleskin:appleskin-forge:mc1.20.1-2.5.0"
-        }
-    }
 }
 
 processResources {
@@ -317,7 +320,8 @@ processResources {
     inputs.property "version", project.version
     inputs.property "mcVersion", project.mcVersion
     inputs.property "minecraftVersion", minecraftVersion
-    inputs.property "jeiDep", project.properties.jeiDep ?: ""
+    inputs.property "reiDep", project.properties.reiDep ?: ""
+    inputs.property "rfmDep", project.properties.refurbishedFurnitureDep ?: ""
     if (loader <= 0) {
         inputs.property "forge", project.properties.forgeDep
     }
@@ -328,7 +332,8 @@ processResources {
     filesMatching(["fabric.mod.json", "META-INF/mods.toml", "quilt.mod.json"]) {
         def map = loader == 2 ? ["version": project.version, "minecraftVersion": minecraftVersion, group: project.group.toString()] : ["version": project.version, "minecraftVersion": minecraftVersion]
         if (loader <= 0) map.put("forge", project.properties.forgeDep)
-        map.put("jeiDep", project.properties.jeiDep ?: "")
+        map.put("reiDep", project.properties.reiDep ?: "")
+        map.put("rfmDep", project.properties.refurbishedFurnitureDep ?: "")
         map.put("clothConfigDep", project.properties.clothConfigDep)
         System.out.println(map)
         expand map
@@ -343,30 +348,16 @@ processResources {
 
     doLast {
         if (loader == -1 && mcVersion != 12001) {
-            fileTree(dir: outputs.files.asPath, include: "clothintegration.mixins.json").each { File file ->
+            fileTree(dir: outputs.files.asPath, include: "reiintegration.mixins.json").each { File file ->
                 def parse = new JsonSlurper().parse(file)
                 parse.remove("refmap")
-                file.text = JsonOutput.prettyPrint(JsonOutput.toJson(parse))
-            }
-        }
-        if (!project.properties.jeiVersion) {
-            fileTree(dir: outputs.files.asPath, include: "clothintegration.mixins.json").each { File file ->
-                def parse = new JsonSlurper().parse(file)
-                parse["mixins"].remove("EnumSerializerAccessor")
-                parse["mixins"].remove("IntegerSerializerAccessor")
-                file.text = JsonOutput.prettyPrint(JsonOutput.toJson(parse))
-            }
-
-            fileTree(dir: outputs.files.asPath, include: "fabric.mod.json").each { File file ->
-                def parse = new JsonSlurper().parse(file)
-                parse["recommends"].remove("jei")
                 file.text = JsonOutput.prettyPrint(JsonOutput.toJson(parse))
             }
         }
 
         if (loader == -1 && mcVersion != 12001) {
             fileTree(dir: outputs.files.asPath, include: "META-INF/mods.toml").each { File file ->
-                file.text += "\n\n[[mixins]]\nconfig = \"clothintegration.mixins.json\""
+                file.text += "\n\n[[mixins]]\nconfig = \"reiintegration.mixins.json\""
                 file.text = file.text.replaceAll("modId = \"forge\"", "modId = \"neoforge\"")
             }
 
@@ -379,7 +370,7 @@ processResources {
 
     // exclude mod meta for non-applicable loader
     if (loader <= 0) {
-        exclude 'quilt.mod.json', 'fabric.mod.json', 'clothintegration.accesswidener'
+        exclude 'quilt.mod.json', 'fabric.mod.json', 'reiintegration.accesswidener'
     } else if (loader == 1) {
         exclude 'quilt.mod.json', 'META-INF/mods.toml', 'META-INF/accesstransformer.cfg', 'pack.mcmeta'
     } else if (loader == 2) {
@@ -464,7 +455,7 @@ tasks.remapJar.finalizedBy(signRemapJar)
 
 loom {
     mods {
-        jeiCloth {
+        reiIntegration {
             sourceSet sourceSets.main
         }
     }
@@ -474,7 +465,7 @@ loom {
 curseforge {
     apiKey = CF_KEY
     project {
-        id = "962031"
+        id = "0"
         changelog = CHANGELOG
         releaseType = "beta"
         //addGameVersion "Forge", "Fabric", "Client", "Java 17"
@@ -505,7 +496,7 @@ curseforge {
 
 modrinth {
     token = MR_KEY // This is the default. Remember to have the MODRINTH_TOKEN environment variable set or else this will fail, or set it to whatever you want - just make sure it stays private!
-    projectId = "VbyJLvvb" // This can be the project ID or the slug. Either will work!
+    projectId = "0" // This can be the project ID or the slug. Either will work!
     versionNumber = version // You don't need to set this manually. Will fail if Modrinth has this version already
     versionName = "[${loader == 0 ? "Forge" : loader == 1 ? "Fabric" : loader == 2 ? "Quilt" : loader == -1 ? "NeoForge" : nodontdothat()} ${project.name.split('-')[0]}] ${version}"
     versionType = "beta" // This is the default -- can also be `beta` or `alpha`
