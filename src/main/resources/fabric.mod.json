@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "id": "reiintegration",
+  "id": "re2",
   "version": "${version}",
-  "name": "REI Integration",
+  "name": "REI Integrations (RE2)",
   "description": "REI support for mods that don't provide REI support by default!",
   "accessWidener": "reiintegration.accesswidener",
   "authors": [
@@ -43,7 +43,7 @@
       }
     },
     "configured": {
-      "background": "minecraft:textures/block/stone.png"
+      "background": "minecraft:textures/block/cherry_planks.png"
     }
   }
 }

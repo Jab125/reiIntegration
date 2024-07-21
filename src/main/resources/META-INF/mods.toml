@@ -3,17 +3,17 @@ loaderVersion = "*"
 license = "LGPL-2.1-only"
 
 [[mods]]
-modId = "reiintegration"
+modId = "re2"
 version = "${version}"
-displayName = "REI Integration"
+displayName = "REI Integrations (RE2)"
 authors = "Jab125"
 description = '''
-REI support for mods that don't provide REI support by default!!
+REI support for mods that don't provide REI support by default!
 '''
 logoFile="logo.png"
 displayTest="IGNORE_ALL_VERSION" # doesn't matter if mod is installed on client or on server and vice versa.
 
-[[dependencies.reiintegration]]
+[[dependencies.re2]]
 modId = "forge"
 mandatory = true
 type="required"
@@ -21,7 +21,7 @@ versionRange = "$forge"
 ordering = "NONE"
 side = "BOTH"
 
-[[dependencies.reiintegration]]
+[[dependencies.re2]]
 modId = "minecraft"
 mandatory = true
 type="required"
@@ -29,7 +29,7 @@ versionRange = "$minecraftVersion"
 ordering = "NONE"
 side = "BOTH"
 
-[[dependencies.reiintegration]]
+[[dependencies.re2]]
 modId="roughlyenoughitems"
 mandatory = true
 type="required"
@@ -37,7 +37,7 @@ versionRange="$reiDep"
 ordering="NONE"
 side="BOTH"
 
-[[dependencies.reiintegration]]
+[[dependencies.re2]]
 modId="refurbished_furniture"
 mandatory = true
 type="required"
@@ -45,7 +45,7 @@ versionRange="$rfmDep"
 ordering="NONE"
 side="BOTH"
 
-[[dependencies.reiintegration]]
+[[dependencies.re2]]
 modId="cloth_config"
 mandatory=true
 type="required"
@@ -53,5 +53,5 @@ versionRange="$clothConfigDep"
 ordering="NONE"
 side="BOTH"
 
-[modproperties.reiintegration]
-configuredBackground="minecraft:textures/block/stone.png"
+[modproperties.re2]
+configuredBackground="minecraft:textures/block/cherry_planks.png"
