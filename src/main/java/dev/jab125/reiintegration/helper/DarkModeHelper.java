@@ -142,8 +142,8 @@ public class DarkModeHelper {
                     NativeImage nativeImage = getNativeImage(manager, RfmPlugin.TEXTURES, RfmPlugin.TEXTURES_DARK, JEI1_ARROW_EXCLUSIONS);
                     NativeImage nativeImage1 = getNativeImage(manager, RfmPlugin.TEXTURES_2, RfmPlugin.TEXTURES_2_DARK, JEI2_ARROW_EXCLUSIONS);
 
-                    Files.write(Path.of("testing2.png"), nativeImage.getBytes());
-                    Files.write(Path.of("testing3.png"), nativeImage1.getBytes());
+                    //Files.write(Path.of("testing2.png"), nativeImage.getBytes());
+                    //Files.write(Path.of("testing3.png"), nativeImage1.getBytes());
                     //bytes = inputStream.readAllBytes();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
