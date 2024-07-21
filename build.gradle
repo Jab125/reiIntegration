@@ -465,9 +465,9 @@ loom {
 curseforge {
     apiKey = CF_KEY
     project {
-        id = "0"
+        id = "1068038"
         changelog = CHANGELOG
-        releaseType = "beta"
+        releaseType = "alpha"
         //addGameVersion "Forge", "Fabric", "Client", "Java 17"
         //  addGameVersion "Client"
         addGameVersion loader == 0 ? "Forge" : loader == 1 ? "Fabric" : loader == 2 ? "Quilt" : loader == -1 ? "NeoForge" : nodontdothat()
@@ -482,7 +482,8 @@ curseforge {
                     } else if (loader == 2) {
                         requiredDependency 'qsl'
                     }
-                    requiredDependency 'cloth-config'
+                    requiredDependency 'architectury-api'
+                    requiredDependency 'refurbished-furniture'
                 }
             }
         }
@@ -496,10 +497,10 @@ curseforge {
 
 modrinth {
     token = MR_KEY // This is the default. Remember to have the MODRINTH_TOKEN environment variable set or else this will fail, or set it to whatever you want - just make sure it stays private!
-    projectId = "0" // This can be the project ID or the slug. Either will work!
+    projectId = "dMwUKI3J" // This can be the project ID or the slug. Either will work!
     versionNumber = version // You don't need to set this manually. Will fail if Modrinth has this version already
     versionName = "[${loader == 0 ? "Forge" : loader == 1 ? "Fabric" : loader == 2 ? "Quilt" : loader == -1 ? "NeoForge" : nodontdothat()} ${project.name.split('-')[0]}] ${version}"
-    versionType = "beta" // This is the default -- can also be `beta` or `alpha`
+    versionType = "alpha" // This is the default -- can also be `beta` or `alpha`
     uploadFile = signRemapJar.output // With Loom, this MUST be set to `remapJar` instead of `jar`!
     gameVersions = [project.name.split("-")[0]] // Must be an array, even with only one version
     loaders = [loader == -1 ? "neoforge" : loader == 0 ? "forge" : loader == 1 ? "fabric" : loader == 2 ? "quilt" : nodontdothat()] // Must also be an array - no need to specify this if you're using Loom or ForgeGradle
@@ -514,7 +515,7 @@ modrinth {
         } else if (loader == 2) {
             required.project 'qsl'
         }
-        required.project 'cloth-config'
+        required.project 'architectury-api'
     }
     debugMode = false
 }

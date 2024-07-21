@@ -28,7 +28,7 @@
     "reiintegration.mixins.json"
   ],
   "depends": {
-    "fabric": "*",
+    "fabric-api": "*",
     "minecraft": "${minecraftVersion}",
     "cloth-config": "${clothConfigDep}",
     "refurbished_furniture": "${rfmDep}",
