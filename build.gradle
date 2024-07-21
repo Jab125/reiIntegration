@@ -475,16 +475,15 @@ curseforge {
         addGameVersion "Java " + (mcVersion >= 12005 ? 21 : mcVersion >= 11800 ? 17 : mcVersion >= 11700 ? 16 : 8)
         mainArtifact(signRemapJar.output) {
             displayName = "[${loader == 0 ? "Forge" : loader == 1 ? "Fabric" : loader == 2 ? "Quilt" : loader == -1 ? "NeoForge" : nodontdothat()} ${project.name.split('-')[0]}] ${version}"
-            if (loader >= 1) {
-                relations {
-                    if (loader == 1) {
-                        requiredDependency 'fabric-api'
-                    } else if (loader == 2) {
-                        requiredDependency 'qsl'
-                    }
-                    requiredDependency 'architectury-api'
-                    requiredDependency 'refurbished-furniture'
+            relations {
+                if (loader == 1) {
+                    requiredDependency 'fabric-api'
+                } else if (loader == 2) {
+                    requiredDependency 'qsl'
                 }
+                requiredDependency 'architectury-api'
+                requiredDependency 'refurbished-furniture'
+                requiredDependency 'roughly-enough-items'
             }
         }
     }
@@ -516,6 +515,7 @@ modrinth {
             required.project 'qsl'
         }
         required.project 'architectury-api'
+        required.project 'rei'
     }
     debugMode = false
 }
