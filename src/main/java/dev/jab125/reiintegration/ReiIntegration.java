@@ -17,9 +17,9 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 //#endif
 public class ReiIntegration {
-    public static final String MOD_ID = "reiintegration";
+    public static final String MOD_ID = "re2";
     public static Identifier id(String type, String path) {
-        return new Identifier("reic", type + "/" + path);
+        return new Identifier(MOD_ID, type + "/" + path);
     }
 
     //#if LOADER == FABRIC
